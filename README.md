@@ -37,8 +37,8 @@ O baralho é composto por 30 cartas com valores de ponto fixos, seguindo o padr�
 * **Solvix** (Ás) - Ataque: **Algoritmo Instituinte** - **11 pontos**
 * **Guardião da Ordem** (7) - **10 pontos**
 * **Rei SlugPantheon** (Rei) - **4 pontos**
-* **Rainha SlugDiana** (Rainha) - **4 pontos**
-* **Cavaleiro SlugLeona** (Cavaleiro) - **3 pontos**
+* **Rainha SlugDiana** (Rainha) - **3 pontos**
+* **Cavaleiro SlugLeona** (Cavaleiro) - **2 pontos**
 * **Unidade Hexteck de Targon** (3) - **0 pontos**
 * **Isca Hexteck de Targon** (2) - **0 pontos**
 
@@ -46,8 +46,8 @@ O baralho é composto por 30 cartas com valores de ponto fixos, seguindo o padr�
 * **Caityslug** (Ás) - Ataque: **Disparo Calibrado** - **11 pontos**
 * **Guardião da Tecnologia** (7) - **10 pontos**
 * **Rei SlugHeimer** (Rei) - **4 pontos**
-* **Rainha SlugJinx** (Rainha) - **4 pontos**
-* **Cavaleiro Caveirslug** (Cavaleiro) - **3 pontos**
+* **Rainha SlugJinx** (Rainha) - **3 pontos**
+* **Cavaleiro Caveirslug** (Cavaleiro) - **2 pontos**
 * **Unidade Hexteck de Piltover** (3) - **0 pontos**
 * **Isca Hexteck de Piltover** (2) - **0 pontos**
 
@@ -55,7 +55,7 @@ O baralho é composto por 30 cartas com valores de ponto fixos, seguindo o padr�
 * **Samirae** (Ás) - Ataque: **Estilo Desafiador** - **11 pontos**
 * **Guardião da Mutação** (7) - **10 pontos**
 * **Rei SlugSinged** (Rei) - **4 pontos**
-* **Rainha SlugCamille** (Rainha) - **4 pontos**
-* **Cavaleiro SlugEkk** (Cavaleiro) - **3 pontos**
+* **Rainha SlugCamille** (Rainha) - **3 pontos**
+* **Cavaleiro SlugEkk** (Cavaleiro) - **2 pontos**
 * **Unidade Hexteck de Zaun** (3) - **0 pontos**
 * **Isca Hexteck de Zaun** (2) - **0 pontos**
