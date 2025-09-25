@@ -89,6 +89,25 @@ for carta in mao_jogador: #loop que percorre a sua mao, a cada vez que o loop ro
 print("\nMão do computador:")
 for carta in mao_computador:
     print(f"- {carta.name}") #f-string permite que voce use variavie diretamente dentro do texto
+
+#loop para escolher uma carta aleatória para ser o trunfo e garantir que não seja de 10 ou 11 pontos
+trunfo_carta = None #None significa --> essa variavel existe mas nao tem nada guardado nela ainda
+while trunfo_carta is None or trunfo_carta.value >= 10:
+    trunfo_carta = random.choice(baralho) # "continue executando enquanto o valor da carta for maior ou igual a 10, ou seja pare assim que encontrar um valor menor que 10, assim nunca vai ser um 10 ou um 11"
+print(trunfo_carta.name)
+
+#remove a carta da sua posição atual no baralho
+baralho.remove(trunfo_carta)
+
+#coloca a carta do trunfo no final do bralho
+baralho.append(trunfo_carta)
+
+#define a categoria do trunfo e imprime
+trunfo = trunfo_carta.category
+print(f"O Trunfo da partida é a categoria: {trunfo}")
+print(f"A carta do Trunfo é: {trunfo_carta.name}")
+print(f"O valor do Trunfo é: {trunfo_carta.value}")
+
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
 while rodando: 
