@@ -98,7 +98,7 @@ while rodando:
             rodando = False
 
     # Preenche o fundo da tela com uma cor 
-    tela.fill((255, 0, 0)) # código RGB Cor preta
+    tela.fill((255, 255, 0)) # código RGB Cor amarela
 
     # Atualiza a tela para mostar oque foi desenhado
     pygame.display.flip()
