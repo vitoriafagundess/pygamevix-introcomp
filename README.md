@@ -1,9 +1,6 @@
----
 # Vixterra: Duelo de Prismas
 
 Um MVP de um card game por turnos, construído em Python e Pygame.
-
----
 
 ### 📜 Resumo do Projeto
 
@@ -11,9 +8,13 @@ O projeto é um duelo 1x1 contra a inteligência artificial, que adapta as regra
 
 ### 🗺️ Contexto e História
 
-O mundo de **Vixterra** é uma vasta rede de cavernas e passagens subterrâneas, onde os mestres duelistas competem para aprimorar sua maestria. Eles não duelam por poder, mas por honra em uma série de torneios chamados de **Confrontos de Prisma**. A própria energia de Vixterra é prismática, e os duelistas lutam com essa força.
+O mundo de **Vixterra** é uma vasta rede de cavernas e passagens subterrâneas. No coração desse mundo, a energia vital emana de gigantescos cristais conhecidos como **Prismas**, a fonte de todo o poder que movimenta vixterra.
 
-Os duelistas invocam **Lesmas Constructos** (um termo em psicologia e engenharia que se refere a uma ideia ou estrutura criada), que são a manifestação da sua própria mente e estratégia de combate (união PsiEng). As categorias das cartas que eles usam, como **Targon**, **Piltover** e **Zaun**, são **disciplinas de combate**. Cada disciplina representa uma filosofia de duelo diferente:
+Os mestres duelistas competem por honra em torneios chamados de **Confrontos de Prisma**. Eles não invocam monstros, mas sim **Lesmas Constructos** (um termo em psi e eng que se refere a uma ideia ou estrutura criada), que são a manifestação da sua própria mente e estratégia de combate. Elas representam a união entre a criação abstrata da mente e a lógica de construção, se tornando um campo de batalha onde as ideias se materializam.
+
+A pontuação no jogo simboliza o domínio dessa energia prismática, com cada vitória de rodada representando a absorção de poder. O objetivo é aprimorar sua maestria e, ao final do duelo, demonstrar que seu controle sobre essa força é maior do que o do seu oponente.
+
+As categorias de cartas **Targon**, **Piltover** e **Zaun**, são disciplinas de combate. Cada uma representa uma filosofia de duelo diferente:
 
 * **Targon:** A disciplina da ascensão e do poder espiritual.
 * **Piltover:** A disciplina da precisão e da tecnologia.
