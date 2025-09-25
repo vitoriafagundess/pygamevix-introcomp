@@ -10,15 +10,17 @@ O projeto é um duelo 1x1 contra a inteligência artificial, que adapta as regra
 
 O mundo de **Vixterra** é uma vasta rede de cavernas e passagens subterrâneas. No coração desse mundo, a energia vital emana de gigantescos cristais conhecidos como **Prismas**, a fonte de todo o poder que movimenta vixterra.
 
-Os mestres duelistas competem por honra em torneios chamados de **Confrontos de Prisma**. Eles não invocam monstros, mas sim **Lesmas Constructos** (um termo em psi e eng que se refere a uma ideia ou estrutura criada), que são a manifestação da sua própria mente e estratégia de combate. Elas representam a união entre a criação abstrata da mente e a lógica de construção, se tornando um campo de batalha onde as ideias se materializam.
+Os mestres duelistas competem por honra em torneios chamados de **Confrontos de Prisma**. Eles não invocam monstros, mas sim **Lesmas Constructos** que são a manifestação da mente, da estratégia e da disciplina a que pertencem. Elas representam a união entre a criação abstrata da mente e a lógica de construção(união psieng), se tornando um campo de batalha onde as ideias se materializam.
 
-A pontuação no jogo simboliza o domínio dessa energia prismática, com cada vitória de rodada representando a absorção de poder. O objetivo é aprimorar sua maestria e, ao final do duelo, demonstrar que seu controle sobre essa força é maior do que o do seu oponente.
+Cada Lesma Constructo pertence a uma das três disciplinas de combate — **Targon, Piltover ou Zaun** —, que representam diferentes filosofias de duelo. Os personagens do seu jogo, como Solvix, Caityslug e Samira, são os campeões lendários de cada uma dessas disciplinas.
 
-As categorias de cartas **Targon**, **Piltover** e **Zaun**, são disciplinas de combate. Cada uma representa uma filosofia de duelo diferente:
+As categorias de cartas **Targon**, **Piltover** e **Zaun** representam uma filosofia de duelo diferente:
 
 * **Targon:** A disciplina da ascensão e do poder espiritual.
 * **Piltover:** A disciplina da precisão e da tecnologia.
 * **Zaun:** A disciplina da adaptação e da força bruta.
+
+A **pontuação** no jogo **simboliza o domínio dessa energia prismática**. O objetivo é aprimorar sua maestria e, ao final do duelo, demonstrar que seu controle sobre essa força é maior do que o do seu oponente.
 
 ### 🎮 Regras do Jogo
 
@@ -53,7 +55,7 @@ O baralho é composto por 30 cartas com valores de ponto fixos, seguindo o padr�
 * **Isca Hexteck de Piltover** (2) - **0 pontos**
 
 #### **Zaun**
-* **Samirae** (Ás) - Ataque: **Estilo Desafiador** - **11 pontos**
+* **Samira** (Ás) - Ataque: **Estilo Desafiador** - **11 pontos**
 * **Guardião da Mutação** (7) - **10 pontos**
 * **Rei SlugSinged** (Rei) - **4 pontos**
 * **Rainha SlugCamille** (Rainha) - **3 pontos**
