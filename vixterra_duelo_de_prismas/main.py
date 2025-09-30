@@ -110,15 +110,32 @@ print(f"O valor do Trunfo é: {trunfo_carta.value}")
 
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
-while rodando: 
+while rodando:  #roda o tempo todo 
     # 1. Lida com os eventos(fechar a janela, etc.)      
     for evento in pygame.event.get(): # para cada item dentro da lista de eventos, chame esse item de evento e faça algo
         if evento.type == pygame.QUIT:
             rodando = False
 
-    # Preenche o fundo da tela com uma cor 
-    tela.fill((255, 255, 0)) # código RGB Cor amarela
+    # 2. Lógica da rodada
+    if len(mao_jogador) > 0 and len(mao_computador) > 0:  #a cada segundo verifica se os jogadores tem cartas 
+        # A lógica para a rodada (jogar cartas, etc.) virá aqui!
+        print("\n --- Nova Rodada ---") #separando visualmente no terminal as rodadas
 
+        print("Sua mão:")
+        for i, carta in enumerate(mao_jogador): #enumerate é uma função que pecorre algo(mão do jogador) e a cada carta ele da a posição(indice i) e o próprio item
+            print(f"[{i+1}] - {carta.name}") 
+        #essa funçao input() so funciona no terminal, depois que for implementado a janela grafica, vou criar uma linha de código que detecta quando o jogador clica em uma das cartas na tela.
+        escolha = input("escolha o número da carta que você quer jogar: ") 
+        carta_jogada_jogador = mao_jogador.pop(int(escolha)-1) #pega o numero que digitei, retira a carta dessa posição e salva na variavel carta jogada
+        pass  #comando temporario que diz ao python para não fazer nada por enquanto 
+
+    else:
+        # o jogo termina aqui.
+        print("Fim do jogo!")
+        rodando = False
+    # 3. Lógica de renderização da tela
+    # Preenche o fundo da tela com uma cor 
+    tela.fill((255, 255, 0)) # código RGB 
     # Atualiza a tela para mostar oque foi desenhado
     pygame.display.flip()
 
