@@ -88,7 +88,7 @@ for carta in mao_jogador: #loop que percorre a sua mao, a cada vez que o loop ro
 
 print("\nMão do computador:")
 for carta in mao_computador:
-    print(f"- {carta.name}") #f-string permite que voce use variavie diretamente dentro do texto
+    print(f"- {carta.name} (Valor: {carta.value})") #f-string permite que voce use variavie diretamente dentro do texto
 
 #loop para escolher uma carta aleatória para ser o trunfo e garantir que não seja de 10 ou 11 pontos
 trunfo_carta = None #None significa --> essa variavel existe mas nao tem nada guardado nela ainda
@@ -108,6 +108,13 @@ print(f"O Trunfo da partida é a categoria: {trunfo}")
 print(f"A carta do Trunfo é: {trunfo_carta.name}")
 print(f"O valor do Trunfo é: {trunfo_carta.value}")
 
+
+
+# CRIANDO O PLACAR ANTES DO JOGO COMEÇAR 
+score_jogador = 0
+score_computador = 0
+
+
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
 while rodando:  #roda o tempo todo 
@@ -116,7 +123,7 @@ while rodando:  #roda o tempo todo
         if evento.type == pygame.QUIT:
             rodando = False
 
-    # 2. Lógica da rodada
+    # 2. LÓGICA DA RODADA
     if len(mao_jogador) > 0 and len(mao_computador) > 0:  #a cada segundo verifica se os jogadores tem cartas 
         # A lógica para a rodada (jogar cartas, etc.) virá aqui!
         print("\n --- Nova Rodada ---") #separando visualmente no terminal as rodadas
@@ -127,8 +134,76 @@ while rodando:  #roda o tempo todo
         #essa funçao input() so funciona no terminal, depois que for implementado a janela grafica, vou criar uma linha de código que detecta quando o jogador clica em uma das cartas na tela.
         escolha = input("escolha o número da carta que você quer jogar: ") 
         carta_jogada_jogador = mao_jogador.pop(int(escolha)-1) #pega o numero que digitei, retira a carta dessa posição e salva na variavel carta jogada
-        pass  #comando temporario que diz ao python para não fazer nada por enquanto 
+        
 
+        #LÓGICA PARA O COMPUTADOR DECIDIR QUAL CARTA JOGAR
+        print("\nVez do computador...")
+        # A IA precisa de uma estratégia.
+        # 1. ela verifica se tem uma carta de trunfo.
+        cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo] #for carta in... é uma forma de criar uma lista com todas as cartas trunfo 
+
+        # 2. Se a IA tiver uma carta trunfo, ela joga uma aleatória dentre elas. 
+        if len(cartas_trunfo_ia_namao) > 0:
+            carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
+            mao_computador.remove(carta_jogada_computador)
+        # 3. se a IA não tiver jogar uma carta aleatoria 
+        else: 
+            carta_jogada_computador = random.choice(mao_computador)
+            mao_computador.remove(carta_jogada_computador)
+
+        print(f"O computador jogou: {carta_jogada_computador.name}")
+
+        
+        
+        # LOGICA PARA DECIDIR O VENCEDOR
+        #mesa para a rodada
+        mesa = [carta_jogada_jogador, carta_jogada_computador] #lista chamada mesa e adiciona as cartas do computador e do jogador
+
+        # DECIDE O NIPE DA RODADA(O DA PRIMEIRA CARTA DO JOGADOR)
+        naipe_da_rodada = carta_jogada_jogador.category
+
+        #Encontra as cartas trunfo na mesa, passo crucial para que o jogo saiba se a regra de trunfo se aplica ou não
+        cartas_trunfo_na_mesa = [carta for carta in mesa if carta.category == trunfo]  
+
+        vencedor = None 
+
+        #verifar se a lista de trunfo na mesa ta vazia ou nao
+        if len(cartas_trunfo_na_mesa) > 0:
+            #Lógica para quando há trunfo na mesa
+            #1. encontrar a carta trunfo de maior valor na mesa
+            carta_vencedora = max(cartas_trunfo_na_mesa, key=lambda carta: carta.value) # função lambda cria a regra de que a função max() deve comparar as cartas apenas com base no seu valor(pontuação)
+            #2. decide quem é o vencedor com base na carta
+            if carta_vencedora == carta_jogada_jogador:
+                vencedor = "jogador"
+            else:
+                vencedor = "computador"
+        else:
+            # lógica para quando não há trunfo na mesa
+            # se o nipe da carta do computador é mesmo da rodada 
+            if carta_jogada_computador.category == naipe_da_rodada:
+                #A carta de maior valor vence
+                if carta_jogada_computador.value > carta_jogada_jogador. value:
+                    vencedor = "computador"
+                else:
+                    vencedor = "jogador"
+            # se o naipe da carta do computador é diferente, o jogador vence
+            else:
+                vencedor = "jogador"
+
+        
+        
+        # CÓDIGO PARA SOMAR OS PONTOS E COMPRAR NOVAS CARTAS
+        if vencedor == "jogador":
+            for carta in mesa:
+                score_jogador += carta.value #soma o valor da carta ao score do jogador
+        else:
+            for carta in mesa:
+                score_computador += carta.value 
+
+        if vencedor == "jogador":
+            print(f"Você venceu a rodada! Seu score: {score_jogador}")
+        else:
+            print(f"O computador venceu a rodada! Score do computador: {score_computador}")
     else:
         # o jogo termina aqui.
         print("Fim do jogo!")
@@ -138,6 +213,8 @@ while rodando:  #roda o tempo todo
     tela.fill((255, 255, 0)) # código RGB 
     # Atualiza a tela para mostar oque foi desenhado
     pygame.display.flip()
+
+ 
 
 
 # o jogo termina
