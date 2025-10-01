@@ -57,7 +57,6 @@ zaun_isca_hexteck = Card("Isca Hexteck de Zaun", "Zaun", 0, "")
  
 # Ultilizando lista para orgazinar todas as cartas em um unico local, uma lista é como uma gaveta que guarda varios itens,
 #facilita manipulação
-
 baralho = [
     solvix, guardiao_da_ordem, rei_slugpantheon, rainha_slugdiana, cavaleiro_slugleona,
     targon_unidade_hexteck, targon_isca_hexteck,
@@ -71,6 +70,8 @@ baralho = [
 
 # função que mistura coisas dentro de uma lista
 random.shuffle(baralho)
+
+
 
 #distribuindo as cartas para as mão do jogador e do computador
 
@@ -110,10 +111,13 @@ print(f"O valor do Trunfo é: {trunfo_carta.value}")
 
 
 
+
 # CRIANDO O PLACAR ANTES DO JOGO COMEÇAR 
 score_jogador = 0
 score_computador = 0
 
+#Decidindo quem joga primeiro na rodada 
+vez_do_jogador =random.choice(["jogador", "computador"])
 
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
@@ -126,6 +130,7 @@ while rodando:  #roda o tempo todo
     # 2. LÓGICA DA RODADA
     if len(mao_jogador) > 0 and len(mao_computador) > 0:  #a cada segundo verifica se os jogadores tem cartas 
         # A lógica para a rodada (jogar cartas, etc.) virá aqui!
+        
         print("\n --- Nova Rodada ---") #separando visualmente no terminal as rodadas
 
         print("Sua mão:")
@@ -192,7 +197,8 @@ while rodando:  #roda o tempo todo
 
         
         
-        # CÓDIGO PARA SOMAR OS PONTOS E COMPRAR NOVAS CARTAS
+        #  PONTUAÇÃO E COMPRAR NOVAS CARTAS
+            #soma pontos
         if vencedor == "jogador":
             for carta in mesa:
                 score_jogador += carta.value #soma o valor da carta ao score do jogador
@@ -204,6 +210,16 @@ while rodando:  #roda o tempo todo
             print(f"Você venceu a rodada! Seu score: {score_jogador}")
         else:
             print(f"O computador venceu a rodada! Score do computador: {score_computador}")
+
+            #comprando as cartas e verifica quem é o vencedor da rodada e faz com que ele compre a carta primeiro
+        if len(baralho) > 0:
+            if vencedor == "jogador":
+                mao_jogador.append(baralho.pop(0)) #baralho.pop retira a primeira carta do baralho, baralho append coloca na mao do jogador
+                mao_computador.append(baralho.pop(0))
+            else: 
+                mao_computador.append(baralho.pop(0))
+                mao_jogador.append(baralho.pop(0))
+        
     else:
         # o jogo termina aqui.
         print("Fim do jogo!")
