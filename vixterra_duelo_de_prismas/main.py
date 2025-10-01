@@ -25,47 +25,68 @@ class Card:
         self.value = value
         self.attack = attack
 
+#função para jogada do jogador
+def jogada_jogador(mao_jogador):
+    print("Sua vez de jogar!")
+    print("Suas cartas:")
+
+    for i, carta in enumerate(mao_jogador): #enumerate é uma função que pecorre algo(mão do jogador) e a cada carta ele da a posição(indice i) e o próprio item
+        print(f"[{i+1}] - {carta.name} ({carta.category}/valor:{carta.value})")
+
+    #GARANTINDO QUE A ESCOLHA DA CARTA SEJA ENTRE UMA DAS TRÊS 
+    while True: #loop roda até encontrar um break
+        try: #try é como se fosse um "teste de segurança" nesse meu caso vai ser por conta do input que pode da erro ou falhar se eu digitar um texto por exemplo
+            escolha = int(input("Escolha o número da carta que você quer jogar(1 a 3): ")) #essa funçao input() so funciona no terminal, depois que for implementado a janela grafica, vou criar uma linha de código que detecta quando o jogador clica em uma das cartas na tela. se o try funcionar perfeitamento o codigo continua 
+            if 1 <= escolha <=len(mao_jogador):
+                    carta_jogada_jogador = mao_jogador.pop(escolha -1)
+                    print(f"- Você jogou: {carta_jogada_jogador.name} ({carta_jogada_jogador.category}/valor:{carta_jogada_jogador.value})") #pega o numero que digitei, retira a carta dessa posição e salva na variavel carta jogada
+                    return carta_jogada_jogador
+
+            else:
+                print(f"Escolha inválida! Você só tem cartas de 1 a {len(mao_jogador)} para escolher.")
+        except (ValueError, IndexError): # em python valueerror é qaundo tentamos converter um valor para um tipo errado e index error, acontece quando tenta pegar um item de uma lista que não existe exemplo se eu digitar 5 sendo que minha lista vai de [0,1,2]
+            print("Entrada inválida! Por favor, digite um número.") #printa e roda o while true novamente
 # 3. Criação dos objetos( 30 cartas)
         #Targon (7 cartas) como se fosse o nípe copas na bisca por exemplo, ai no nipe copas tem as cartas de copas
-solvix = Card("Solvix", "Targon", 11, "Algoritmo Instituinte") #como se fosse o ás na bisca
+solvix = Card("Ás Solvix", "Targon", 11, "Algoritmo Instituinte") #como se fosse o ás na bisca
 print(solvix.name)
 print(solvix.value)
-guardiao_da_ordem = Card("Guardião da ordem", "Targon", 10, "")    # como se fosse o 7 na bisca
+guardiao_da_ordem = Card("Dezguardião da ordem", "Targon", 10, "")    # como se fosse o 7 na bisca
 rei_slugpantheon = Card("Rei Slugpantheon", "Targon", 4, "")        # rei
-rainha_slugdiana = Card("Rainha SlugDiana","Targon", 3, "")         #rainha
-cavaleiro_slugleona = Card("Cavaleiro Slugleona", "Targon", 2, "")  # valete
-targon_unidade_hexteck = Card("Unidade Hexteck de Targon", "Targon", 0, "")  #as cartas que não vale nada na bisca
+rainha_slugdiana = Card("Dama SlugDiana","Targon", 2, "")         #rainha
+cavaleiro_slugleona = Card("Valete Slugleona", "Targon", 3, "")  # valete
+targon_petisco_hexteck = Card("Petisco Hexteck de Targon", "Targon", 0, "")  #as cartas que não vale nada na bisca
 targon_isca_hexteck = Card("Isca Hexteck de Targon", "Targon", 0, "")
 
         #Piltover(7 cartas) como se fosse outro nipe
-caityslug = Card("Caityslug", "Piltover", 11, "Disparo Calibrado")    #padrão de valores se repete para cada nipe
-guardiao_da_tecnologia = Card("Guardião da Tecnologia", "Piltover", 10, "")
+caityslug = Card("Ás Caityslug", "Piltover", 11, "Disparo Calibrado")    #padrão de valores se repete para cada nipe
+guardiao_da_tecnologia = Card("Dezguardião da Tecnologia", "Piltover", 10, "")
 rei_slugheimer = Card("Rei SlugHeimer", "Piltover", 4, "")
-rainha_slugjinx = Card("Rainha SlugJinx","Piltover", 3, "")
-cavaleiro_caveirslug = Card("Cavaleiro Caveirslug", "Piltover", 2, "")
-piltover_unidade_hexteck = Card("Unidade Hexteck de Piltover", "Piltover", 0, "")
+rainha_slugjinx = Card("Dama SlugJinx","Piltover", 2, "")
+cavaleiro_caveirslug = Card("Valaete Caveirslug", "Piltover", 3, "")
+piltover_petisco_hexteck = Card("Petisco Hexteck de Piltover", "Piltover", 0, "")
 piltover_isca_hexteck = Card("Isca Hexteck de Piltover", "Piltover", 0, "")
 
         #Zaun (7 cartas) representa outro nipe
-samira = Card("Samira", "Zaun", 11, "Estilo Desafiador")    #padrão  se repete para cada nipe
-guardiao_da_mutacao = Card("Guardião da Mutação", "Zaun", 10, "")
+samira = Card("Ás Samira", "Zaun", 11, "Estilo Desafiador")    #padrão  se repete para cada nipe
+guardiao_da_mutacao = Card("Dezguardião da Mutação", "Zaun", 10, "")
 rei_slugsinged = Card("Rei SlugSinged", "Zaun", 4, "")
-rainha_slugcamille = Card("Rainha SlugCamille","Zaun", 3, "")
-cavaleiro_slugekko = Card("Cavaleiro SlugEkko", "Zaun", 2, "")
-zaun_unidade_hexteck = Card("Unidade Hexteck de Zaun", "Zaun", 0, "")
+rainha_slugcamille = Card("Dama SlugCamille","Zaun", 2, "")
+cavaleiro_slugekko = Card("Valete SlugEkko", "Zaun", 3, "")
+zaun_petisco_hexteck = Card("Petisco Hexteck de Zaun", "Zaun", 0, "")
 zaun_isca_hexteck = Card("Isca Hexteck de Zaun", "Zaun", 0, "")
  
 # Ultilizando lista para orgazinar todas as cartas em um unico local, uma lista é como uma gaveta que guarda varios itens,
 #facilita manipulação
 baralho = [
     solvix, guardiao_da_ordem, rei_slugpantheon, rainha_slugdiana, cavaleiro_slugleona,
-    targon_unidade_hexteck, targon_isca_hexteck,
+    targon_petisco_hexteck, targon_isca_hexteck,
 
     caityslug, guardiao_da_tecnologia, rei_slugheimer, rainha_slugjinx, cavaleiro_caveirslug,
-    piltover_unidade_hexteck, piltover_isca_hexteck,
+    piltover_petisco_hexteck, piltover_isca_hexteck,
 
     samira, guardiao_da_mutacao, rei_slugsinged, rainha_slugcamille, cavaleiro_slugekko,
-    zaun_unidade_hexteck, zaun_isca_hexteck
+    zaun_petisco_hexteck, zaun_isca_hexteck
 ]
 
 # função que mistura coisas dentro de uma lista
@@ -85,17 +106,17 @@ for _ in range(3):  # for com _ quer dizer --> execute este loop 3 vezes, mas n�
 
 print("Sua mão:") #imprime sua mão no terminal
 for carta in mao_jogador: #loop que percorre a sua mao, a cada vez que o loop roda a variavel carta se torna uma das cartas que esta na sua mao
-    print(f"- {carta.name} (Valor: {carta.value})")
+    print(f"- {carta.name} (Categoria:{carta.category} / Valor:{carta.value})")
 
 print("\nMão do computador:")
 for carta in mao_computador:
-    print(f"- {carta.name} (Valor: {carta.value})") #f-string permite que voce use variavie diretamente dentro do texto
+    print(f"- {carta.name} (Categoria:{carta.category} / Valor:{carta.value})") #f-string permite que voce use variavie diretamente dentro do texto
 
 #loop para escolher uma carta aleatória para ser o trunfo e garantir que não seja de 10 ou 11 pontos
 trunfo_carta = None #None significa --> essa variavel existe mas nao tem nada guardado nela ainda
 while trunfo_carta is None or trunfo_carta.value >= 10:
     trunfo_carta = random.choice(baralho) # "continue executando enquanto o valor da carta for maior ou igual a 10, ou seja pare assim que encontrar um valor menor que 10, assim nunca vai ser um 10 ou um 11"
-print(trunfo_carta.name)
+#print(trunfo_carta.name)
 
 #remove a carta da sua posição atual no baralho
 baralho.remove(trunfo_carta)
@@ -104,10 +125,10 @@ baralho.remove(trunfo_carta)
 baralho.append(trunfo_carta)
 
 #define a categoria do trunfo e imprime
-trunfo = trunfo_carta.category
-print(f"O Trunfo da partida é a categoria: {trunfo}")
-print(f"A carta do Trunfo é: {trunfo_carta.name}")
-print(f"O valor do Trunfo é: {trunfo_carta.value}")
+trunfo = trunfo_carta
+print(f"O Trunfo da partida é a categoria: {trunfo.category}")
+print(f"A carta do Trunfo é: {trunfo.name}")
+print(f"O valor do Trunfo é: {trunfo.value}")
 
 
 
@@ -119,6 +140,9 @@ score_computador = 0
 #Decidindo quem joga primeiro na rodada 
 vez_do_jogador =random.choice(["jogador", "computador"])
 
+# iniciar contagem de rodadas
+numero_da_rodada = 1
+
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
 while rodando:  #roda o tempo todo 
@@ -128,36 +152,59 @@ while rodando:  #roda o tempo todo
             rodando = False
 
     # 2. LÓGICA DA RODADA
-    if len(mao_jogador) > 0 and len(mao_computador) > 0:  #a cada segundo verifica se os jogadores tem cartas 
+    # verifica se os jogadores tem cartas
+    if len(mao_jogador) > 0 and len(mao_computador) > 0:  
+            
         # A lógica para a rodada (jogar cartas, etc.) virá aqui!
         
-        print("\n --- Nova Rodada ---") #separando visualmente no terminal as rodadas
-
-        print("Sua mão:")
-        for i, carta in enumerate(mao_jogador): #enumerate é uma função que pecorre algo(mão do jogador) e a cada carta ele da a posição(indice i) e o próprio item
-            print(f"[{i+1}] - {carta.name}") 
-        #essa funçao input() so funciona no terminal, depois que for implementado a janela grafica, vou criar uma linha de código que detecta quando o jogador clica em uma das cartas na tela.
-        escolha = input("escolha o número da carta que você quer jogar: ") 
-        carta_jogada_jogador = mao_jogador.pop(int(escolha)-1) #pega o numero que digitei, retira a carta dessa posição e salva na variavel carta jogada
+        print(f"\n --- Rodada {numero_da_rodada} ---") #separando visualmente no terminal as rodadas
+        numero_da_rodada += 1
+        print(f" categoria do trunfo: {trunfo.category}\n")
         
 
-        #LÓGICA PARA O COMPUTADOR DECIDIR QUAL CARTA JOGAR
-        print("\nVez do computador...")
-        # A IA precisa de uma estratégia.
-        # 1. ela verifica se tem uma carta de trunfo.
-        cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo] #for carta in... é uma forma de criar uma lista com todas as cartas trunfo 
 
-        # 2. Se a IA tiver uma carta trunfo, ela joga uma aleatória dentre elas. 
-        if len(cartas_trunfo_ia_namao) > 0:
-            carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
-            mao_computador.remove(carta_jogada_computador)
-        # 3. se a IA não tiver jogar uma carta aleatoria 
-        else: 
-            carta_jogada_computador = random.choice(mao_computador)
-            mao_computador.remove(carta_jogada_computador)
+        #LOGICA PARA VER DE QUEM É A VEZ
+        if vez_do_jogador == "jogador":
+            # ---- TURNO  DO JOGADOR ----
+            carta_jogada_jogador = jogada_jogador(mao_jogador)
+            
+            # --- TURNO DO COMPUTADOR
+            
+            #LÓGICA PARA O COMPUTADOR DECIDIR QUAL CARTA JOGAR
+            print("\nVez do computador...\n")
+            # A IA precisa de uma estratégia.
+            # 1. ela verifica se tem uma carta de trunfo.
+            cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo.category] #for carta in... é uma forma de criar uma lista com todas as cartas trunfo 
 
-        print(f"O computador jogou: {carta_jogada_computador.name}")
+            # 2. Se a IA tiver uma carta trunfo, ela joga uma aleatória dentre elas. 
+            if len(cartas_trunfo_ia_namao) > 0:
+                carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
+                mao_computador.remove(carta_jogada_computador)
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+ 
+            # 3. se a IA não tiver jogar uma carta aleatoria 
+            else: 
+                carta_jogada_computador = random.choice(mao_computador)
+                mao_computador.remove(carta_jogada_computador)
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+ 
+        else: #VEZ DO COMPUTADOR
+            # --- TURNO DO COMPUTADOR ---
+            print("\nVez do computador...")
+            cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo.category]
+            if len(cartas_trunfo_ia_namao) > 0:
+                carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
+                mao_computador.remove(carta_jogada_computador)
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+ 
+            else:
+                carta_jogada_computador = random.choice(mao_computador)
+                mao_computador.remove(carta_jogada_computador)
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
 
+            # --- TURNO DO JOGADOR ---
+            carta_jogada_jogador = jogada_jogador(mao_jogador)
+        
         
         
         # LOGICA PARA DECIDIR O VENCEDOR
@@ -168,12 +215,12 @@ while rodando:  #roda o tempo todo
         naipe_da_rodada = carta_jogada_jogador.category
 
         #Encontra as cartas trunfo na mesa, passo crucial para que o jogo saiba se a regra de trunfo se aplica ou não
-        cartas_trunfo_na_mesa = [carta for carta in mesa if carta.category == trunfo]  
+        cartas_trunfo_na_mesa = [carta for carta in mesa if carta.category == trunfo.category]  
 
         vencedor = None 
 
-        #verifar se a lista de trunfo na mesa ta vazia ou nao
-        if len(cartas_trunfo_na_mesa) > 0:
+        
+        if len(cartas_trunfo_na_mesa) > 0:    #verifar se a lista de trunfo na mesa ta vazia ou nao
             #Lógica para quando há trunfo na mesa
             #1. encontrar a carta trunfo de maior valor na mesa
             carta_vencedora = max(cartas_trunfo_na_mesa, key=lambda carta: carta.value) # função lambda cria a regra de que a função max() deve comparar as cartas apenas com base no seu valor(pontuação)
@@ -207,23 +254,43 @@ while rodando:  #roda o tempo todo
                 score_computador += carta.value 
 
         if vencedor == "jogador":
-            print(f"Você venceu a rodada! Seu score: {score_jogador}")
+            print(f"Você venceu a rodada!\n")
+            print(f"Seu score: {score_jogador}\nScore oponente: {score_computador}")
         else:
-            print(f"O computador venceu a rodada! Score do computador: {score_computador}")
+            print(f"O computador venceu a rodada!\n")
+            print(f"Score do oponente: {score_computador}\nSeu Score: {score_jogador}")
+
+
+        #define quem joga primeiro na próxima rodada
+        if vencedor == "jogador":
+            vez_do_jogador = "jogador"
+        else:
+            vez_do_jogador = "computador"
+
+
 
             #comprando as cartas e verifica quem é o vencedor da rodada e faz com que ele compre a carta primeiro
-        if len(baralho) > 0:
-            if vencedor == "jogador":
-                mao_jogador.append(baralho.pop(0)) #baralho.pop retira a primeira carta do baralho, baralho append coloca na mao do jogador
+    if len(baralho) > 0:
+        if vencedor == "jogador":
+            mao_jogador.append(baralho.pop(0)) #função pop pega a carta do baralho e adiciona á mao do jogador
+            if len(baralho) > 0:
                 mao_computador.append(baralho.pop(0))
-            else: 
-                mao_computador.append(baralho.pop(0))
+        else:
+            mao_computador.append(baralho.pop(0))
+            if len(baralho) > 0:
                 mao_jogador.append(baralho.pop(0))
-        
+     
     else:
-        # o jogo termina aqui.
-        print("Fim do jogo!")
+        # o jogo termina aqui
+        print("\nFim do jogo!")
+        if score_jogador > score_computador:
+            print("---- PARABÉNS!! Você venceu!!! ----\n")
+        elif score_computador > score_jogador:
+            print("---- Vitória do oponente, tente novamente e domine a energia prismática!! ----\n")
+        else:
+            print("---- Empate! ----\n")
         rodando = False
+
     # 3. Lógica de renderização da tela
     # Preenche o fundo da tela com uma cor 
     tela.fill((255, 255, 0)) # código RGB 
