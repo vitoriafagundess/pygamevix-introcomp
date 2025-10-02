@@ -164,31 +164,95 @@ while rodando:  #roda o tempo todo
 
 
         #LOGICA PARA VER DE QUEM É A VEZ
-        if vez_do_jogador == "jogador":
+        
+        if vez_do_jogador == "jogador": #Quando o jogador começa a rodada:
             # ---- TURNO  DO JOGADOR ----
-            carta_jogada_jogador = jogada_jogador(mao_jogador)
+            carta_jogada_jogador = jogada_jogador(mao_jogador) #chamei a função jogadada_jogador
             
             # --- TURNO DO COMPUTADOR
-            
-            #LÓGICA PARA O COMPUTADOR DECIDIR QUAL CARTA JOGAR
             print("\nVez do computador...\n")
-            # A IA precisa de uma estratégia.
-            # 1. ela verifica se tem uma carta de trunfo.
-            cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo.category] #for carta in... é uma forma de criar uma lista com todas as cartas trunfo 
 
-            # 2. Se a IA tiver uma carta trunfo, ela joga uma aleatória dentre elas. 
-            if len(cartas_trunfo_ia_namao) > 0:
-                carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
-                mao_computador.remove(carta_jogada_computador)
-                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+            #carta do jogador
+            carta_jogador = carta_jogada_jogador
+            
+            
+            #lista de cartas do mesmo naipe da rodada
+            cartas_mesmo_nipe = [c for c in mao_computador if c.category == carta_jogador.category]
+            #lista de cartas de trunfo
+            cartas_trunfo = [c for c in mao_computador if c.category == trunfo.category]
+            #lista de cartas que não valem pontos
+            cartas_hexteck = [c for c in mao_computador if c.value == 0]
+            #Conter as cartas que não tem nada haver com a jogada "atual"
+            cartas_outras = [c for c in mao_computador if c.category != carta_jogador.category and c.category != trunfo.category] #c for c in mao_computador vai percorre todas as cartas na mão do computador e selecionar algumas de acordo com a condição que vem depois
+            
+            #definir carta que será jogada
+            carta_jogada_computador = None
+
+            
+            # 1. ---- Cartas do mesmo naipe da rodada ----
+            if cartas_mesmo_nipe:
+                
+                #carta do mesmo naipe e é trunfo
+                if carta_jogador.category == trunfo.category:
+                    #jogador jogou trunfo
+                    #verifica se existe carta que pode vencer
+                    cartas_que_vence = [c for c in cartas_mesmo_nipe if c.value > carta_jogador.value]
+                        # Se o jogador jogou carta de 10 e temos 11, joga para o relé
+                    if carta_jogador.value ==10:
+                        carta_11 = [c for c in cartas_que_vence if c.value == 11]
+                        if carta_11:
+                            carta_jogada_computador = carta_11[0] #joga o 11 para dar rele
+                    
+                    if not carta_jogada_computador: #so entra nesse loop se não tiver a carta 11, ou seja o computador não jogou a carta
+                        if cartas_que_vence:
+                            carta_jogada_computador = min(cartas_que_vence, key=lambda c: c.value) #joga a menor carta que vence
+                        elif cartas_hexteck:
+                            carta_jogada_computador = cartas_hexteck[0] #joga carta que não vale nada
+                        elif cartas_outras:
+                            carta_jogada_computador = min(cartas_outras, key=lambda c: c.value) #jogda menor carta de outro naipe
+                        else:
+                            carta_jogada_computador = min(cartas_trunfo, key=lambda c: c.value) #jofa o menor trunfo
+                # Carta do mesmo naipe, mas não é o trunfo.
+                cartas_maiores = [c for c in cartas_mesmo_nipe if c.value > carta_jogador.value] #filtra apenas cartas cujo valor é maior que o valor da carta que o jogador jogou
+                if cartas_maiores:
+                    carta_jogada_computador = min(cartas_maiores, key=lambda c: c .value) # joga a menor que ainda vence
+                elif cartas_hexteck:
+                    carta_jogada_computador = cartas_hexteck[0] #joga carta que não vale nada
+                else:
+                    carta_jogada_computador = min(cartas_mesmo_nipe, key=lambda c: c.value) #joga a menor carta do mesmo naipe
+
+                
+            # --- 2. Se não houver cartas do mesmo naipe---
+            elif cartas_trunfo: #se não tem cartas do mesmo nipe mas o computador tem cartas do trunfo entra aqui
+                if carta_jogador.value > 3 and carta_jogador.category != trunfo.category: # o computador so considera gastar o trundo se a carta do jogador vale mais que 3 pontos
+                    # Vale a pena usar trunfo para ganahr a carta
+                    cartas_que_vence = [c for c in cartas_trunfo if c.value . carta_jogador.value] #lista com os trunfos que são capazes de vencar a carta 
+                    if cartas_que_vence:
+                        carta_jogada_computador = min(cartas_que_vence, key=lambda c: c.value) #menor trunfo que vence   
+                    else:
+                        carta_jogada_computador = min(cartas_hexteck, key=lambda c: c.value) if cartas_hexteck else min(cartas_trunfo, key=lambda c: c.value) # caso nenhum trunfo vença, tenta jogar uma carta sem valor, e se não tiver joga o trunfo
+                else:
+                    #carta que não vale a pena pegar, joga menor trunfo ou carta que não vale nada
+                    if cartas_hexteck:
+                        carta_jogada_computador = cartas_hexteck[0]
+                    else: #junta todas as cartas que não são do naipe jogado nem trunfo(CARTAS_OUTRAS), com os trunfos e joga a menor carta possivel desse conjunto
+                        carta_jogada_computador = min(cartas_outras + cartas_trunfo, key=lambda c: c.value)
+            
+            
+            # 3. ---- Caso não tenha cartas do mesmo naipe nem trunfos -- 
+            elif cartas_hexteck:
+                carta_jogada_computador = cartas_hexteck[0] #joga carta que não vale nada
+            
+            #4. --- Ultima alternativa: joga a menor carta da mão
+            else:
+                carta_jogada_computador = min(mao_computador, key=lambda c: c.value)
+
+            # Remove a carta da mão
+            mao_computador.remove(carta_jogada_computador)
+            print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n") 
+            
  
-            # 3. se a IA não tiver jogar uma carta aleatoria 
-            else: 
-                carta_jogada_computador = random.choice(mao_computador)
-                mao_computador.remove(carta_jogada_computador)
-                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
- 
-        else: #VEZ DO COMPUTADOR
+        else: #-----Quando o computador começa a rodada:-------
             # --- TURNO DO COMPUTADOR ---
             print("\nVez do computador...")
             cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo.category]
