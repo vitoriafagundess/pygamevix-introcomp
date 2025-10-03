@@ -32,12 +32,7 @@ dez_trunfo_jogado = False
 
 
 #função para jogada do jogador
-# Estado global que controla se o 10 do trunfo já foi jogado
-dez_trunfo_jogado = False  
-
 def jogada_jogador(mao_jogador):
-    global dez_trunfo_jogado  # usamos a variável global dentro da função
-
     print("Sua vez de jogar!")
     print("Suas cartas:")
 
@@ -47,36 +42,28 @@ def jogada_jogador(mao_jogador):
     while True:
         try:
             escolha = int(input(f"Escolha o número da carta que você quer jogar (1 a {len(mao_jogador)}): "))
-
             if 1 <= escolha <= len(mao_jogador):
                 carta_jogada_jogador = mao_jogador[escolha - 1]
 
-                # --- Regra do Ás do trunfo ---
-                if carta_jogada_jogador.value == 11 and carta_jogada_jogador.category == trunfo.category:
-                    if not dez_trunfo_jogado and len(mao_jogador) > 1:
-                        print("⚠️ Atenção: o Ás do trunfo não sai antes da carta que vale 10 pontos")
-                        continue  # volta para escolher outra carta
+                # Bloqueia o Ás do trunfo se houver na mão uma carta de valor 10 do mesmo naipe
+                cartas_10_mesmo_nipe = [c for c in mao_jogador if c.value == 10 and c.category == carta_jogada_jogador.category]
+                if carta_jogada_jogador.value == 11 and cartas_10_mesmo_nipe:
+                    print("Atenção: o Ás não pode ser jogado antes do 10!")
+                    continue
 
-                # Remove a carta da mão
-                carta_jogada_jogador = mao_jogador.pop(escolha - 1)
+                # Remove da mão e retorna a carta
+                return mao_jogador.pop(escolha - 1)
 
-                # Atualiza estado se for o 10 do trunfo
-                if carta_jogada_jogador.value == 10 and carta_jogada_jogador.category == trunfo.category:
-                    dez_trunfo_jogado = True
-
-                print(f"- Você jogou: {carta_jogada_jogador.name} ({carta_jogada_jogador.category}/valor:{carta_jogada_jogador.value})")
-                return carta_jogada_jogador  # só retorna a carta, sem precisar de dois valores
             else:
-                print(f"Escolha inválida! Você só tem cartas de 1 a {len(mao_jogador)} para escolher.")
-        except (ValueError, IndexError):
-            print("Entrada inválida! Por favor, digite um número.")
+                print("Escolha inválida!")
+        except ValueError:
+            print("Digite um número válido!")
 
 
 
 
-
-# 3. Criação dos objetos( 30 cartas)
-        #Targon (7 cartas) como se fosse o nípe copas na bisca por exemplo, ai no nipe copas tem as cartas de copas
+# 3. Criação dos objetos( 24 cartas)
+        #Targon (8 cartas) como se fosse o nípe copas na bisca por exemplo, ai no nipe copas tem as cartas de copas
 solvix = Card("Ás Solvix", "Targon", 11, "Algoritmo Instituinte") #como se fosse o ás na bisca
 print(solvix.name)
 print(solvix.value)
@@ -86,8 +73,9 @@ rainha_slugdiana = Card("Dama SlugDiana","Targon", 2, "")         #rainha
 cavaleiro_slugleona = Card("Valete Slugleona", "Targon", 3, "")  # valete
 targon_petisco_hexteck = Card("Petisco Hexteck de Targon", "Targon", 0, "")  #as cartas que não vale nada na bisca
 targon_isca_hexteck = Card("Isca Hexteck de Targon", "Targon", 0, "")
+condutor_prismatico_targon = Card("Condutor Prismatico de Targon", "Targon", 0, "")
 
-        #Piltover(7 cartas) como se fosse outro nipe
+        #Piltover(8 cartas) como se fosse outro nipe
 caityslug = Card("Ás Caityslug", "Piltover", 11, "Disparo Calibrado")    #padrão de valores se repete para cada nipe
 guardiao_da_tecnologia = Card("Dezguardião da Tecnologia", "Piltover", 10, "")
 rei_slugheimer = Card("Rei SlugHeimer", "Piltover", 4, "")
@@ -95,8 +83,9 @@ rainha_slugjinx = Card("Dama SlugJinx","Piltover", 2, "")
 cavaleiro_caveirslug = Card("Valaete Caveirslug", "Piltover", 3, "")
 piltover_petisco_hexteck = Card("Petisco Hexteck de Piltover", "Piltover", 0, "")
 piltover_isca_hexteck = Card("Isca Hexteck de Piltover", "Piltover", 0, "")
+condutor_prismatico_piltover = Card("Condutor Prismatico de Piltover", "Piltover", 0, "")
 
-        #Zaun (7 cartas) representa outro nipe
+        #Zaun (8 cartas) representa outro nipe
 samira = Card("Ás Samira", "Zaun", 11, "Estilo Desafiador")    #padrão  se repete para cada nipe
 guardiao_da_mutacao = Card("Dezguardião da Mutação", "Zaun", 10, "")
 rei_slugsinged = Card("Rei SlugSinged", "Zaun", 4, "")
@@ -104,18 +93,19 @@ rainha_slugcamille = Card("Dama SlugCamille","Zaun", 2, "")
 cavaleiro_slugekko = Card("Valete SlugEkko", "Zaun", 3, "")
 zaun_petisco_hexteck = Card("Petisco Hexteck de Zaun", "Zaun", 0, "")
 zaun_isca_hexteck = Card("Isca Hexteck de Zaun", "Zaun", 0, "")
+condutor_prismatico_zaun = Card("Condutor prismatico de Zaun", "Zaun", 0, "")
  
 # Ultilizando lista para orgazinar todas as cartas em um unico local, uma lista é como uma gaveta que guarda varios itens,
 #facilita manipulação
 baralho = [
     solvix, guardiao_da_ordem, rei_slugpantheon, rainha_slugdiana, cavaleiro_slugleona,
-    targon_petisco_hexteck, targon_isca_hexteck,
+    targon_petisco_hexteck, targon_isca_hexteck, condutor_prismatico_targon,
 
     caityslug, guardiao_da_tecnologia, rei_slugheimer, rainha_slugjinx, cavaleiro_caveirslug,
-    piltover_petisco_hexteck, piltover_isca_hexteck,
+    piltover_petisco_hexteck, piltover_isca_hexteck, condutor_prismatico_piltover,
 
     samira, guardiao_da_mutacao, rei_slugsinged, rainha_slugcamille, cavaleiro_slugekko,
-    zaun_petisco_hexteck, zaun_isca_hexteck
+    zaun_petisco_hexteck, zaun_isca_hexteck, condutor_prismatico_zaun
 ]
 
 # função que mistura coisas dentro de uma lista
@@ -182,24 +172,27 @@ while rodando:  #roda o tempo todo
         if evento.type == pygame.QUIT:
             rodando = False
 
+    # CABEÇALHO DA RODADA
+    print(f"\n --- Rodada {numero_da_rodada} ---")
+    print(f"Categoria do trunfo: {trunfo.category}\n")
+    numero_da_rodada += 1
+    
+    
     # 2. LÓGICA DA RODADA
     # verifica se os jogadores tem cartas
     if len(mao_jogador) > 0 and len(mao_computador) > 0:  
             
         # A lógica para a rodada (jogar cartas, etc.) virá aqui!
-        
-        print(f"\n --- Rodada {numero_da_rodada} ---") #separando visualmente no terminal as rodadas
-        numero_da_rodada += 1
-        print(f" categoria do trunfo: {trunfo.category}\n")
-        
-
-
+    
         #LOGICA PARA VER DE QUEM É A VEZ
         
         if vez_do_jogador == "jogador": #Quando o jogador começa a rodada:
             # ---- TURNO  DO JOGADOR ----
             carta_jogada_jogador = jogada_jogador(mao_jogador) #chamei a função jogadada_jogador
             
+            if carta_jogada_jogador.value == 10 and carta_jogada_jogador.category == trunfo.category:
+                dez_trunfo_jogado = True
+
             # --- TURNO DO COMPUTADOR
             print("\nVez do computador...\n")
 
@@ -217,6 +210,17 @@ while rodando:  #roda o tempo todo
             cartas_outras = [c for c in mao_computador if c.category != carta_jogador.category and c.category != trunfo.category] #c for c in mao_computador vai percorre todas as cartas na mão do computador e selecionar algumas de acordo com a condição que vem depois
             
             #definir carta que será jogada
+            # --- Lógica do Ás do trunfo ---
+            for c in mao_computador:
+                if c.value == 11 and c.category == trunfo.category and not dez_trunfo_jogado and len(mao_computador) > 1:
+                    # remove temporariamente o Ás da lista de escolhas
+                    mao_computador_sem_as = [x for x in mao_computador if x != c]
+                    break
+            else:
+                mao_computador_sem_as = mao_computador
+
+
+
             carta_jogada_computador = None
 
             
@@ -257,7 +261,7 @@ while rodando:  #roda o tempo todo
             elif cartas_trunfo: #se não tem cartas do mesmo nipe mas o computador tem cartas do trunfo entra aqui
                 if carta_jogador.value > 3 and carta_jogador.category != trunfo.category: # o computador so considera gastar o trundo se a carta do jogador vale mais que 3 pontos
                     # Vale a pena usar trunfo para ganahr a carta
-                    cartas_que_vence = [c for c in cartas_trunfo if c.value . carta_jogador.value] #lista com os trunfos que são capazes de vencar a carta 
+                    cartas_que_vence = [c for c in cartas_trunfo if c.value > carta_jogador.value] #lista com os trunfos que são capazes de vencar a carta 
                     if cartas_que_vence:
                         carta_jogada_computador = min(cartas_que_vence, key=lambda c: c.value) #menor trunfo que vence   
                     else:
@@ -276,7 +280,8 @@ while rodando:  #roda o tempo todo
             
             #4. --- Ultima alternativa: joga a menor carta da mão
             else:
-                carta_jogada_computador = min(mao_computador, key=lambda c: c.value)
+                carta_jogada_computador = min(mao_computador_sem_as, key=lambda c: c.value)
+
 
             # Remove a carta da mão
             mao_computador.remove(carta_jogada_computador)
@@ -286,21 +291,42 @@ while rodando:  #roda o tempo todo
         else: #-----Quando o computador começa a rodada:-------
             # --- TURNO DO COMPUTADOR ---
             print("\nVez do computador...")
-            cartas_trunfo_ia_namao = [carta for carta in mao_computador if carta.category == trunfo.category]
-            if len(cartas_trunfo_ia_namao) > 0:
-                carta_jogada_computador = random.choice(cartas_trunfo_ia_namao)
-                mao_computador.remove(carta_jogada_computador)
-                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
- 
+
+            # Filtra cartas de trunfo, ignorando temporariamente o Ás se necessário
+            cartas_trunfo_ia_namao_validas = []
+            for c in mao_computador:
+                if c.category == trunfo.category:
+                    if c.value == 11 and not dez_trunfo_jogado and len(mao_computador) > 1:
+                        continue  # ignora o Ás por enquanto
+                    cartas_trunfo_ia_namao_validas.append(c)
+
+            # Escolhe a carta a jogar
+            if cartas_trunfo_ia_namao_validas:
+                # Se houver trunfos válidos (sem o Ás bloqueado), joga um aleatório
+                carta_jogada_computador = random.choice(cartas_trunfo_ia_namao_validas)
             else:
-                carta_jogada_computador = random.choice(mao_computador)
-                mao_computador.remove(carta_jogada_computador)
-                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+                # Se só restar o Ás, joga ele
+                trunfos_restantes = [c for c in mao_computador if c.category == trunfo.category]
+                if trunfos_restantes:
+                    carta_jogada_computador = trunfos_restantes[0]
+                else:
+                    # Se não houver trunfos, joga a menor carta disponível
+                    carta_jogada_computador = min(mao_computador, key=lambda c: c.value)
+
+            # Remove a carta da mão
+            mao_computador.remove(carta_jogada_computador)
+
+            # Atualiza estado se for o 10 do trunfo
+            if carta_jogada_computador.value == 10 and carta_jogada_computador.category == trunfo.category:
+                dez_trunfo_jogado = True
+
+            # Mostra a carta jogada
+            print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
 
             # --- TURNO DO JOGADOR ---
             carta_jogada_jogador = jogada_jogador(mao_jogador)
-        
-        
+
+                    
         
         # LOGICA PARA DECIDIR O VENCEDOR
         #mesa para a rodada
