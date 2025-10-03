@@ -389,7 +389,6 @@ while rodando:  #roda o tempo todo
             vez_do_jogador = "computador"
 
 
-
             #comprando as cartas e verifica quem é o vencedor da rodada e faz com que ele compre a carta primeiro
     if len(baralho) > 0:
         if vencedor == "jogador":
@@ -400,17 +399,18 @@ while rodando:  #roda o tempo todo
             mao_computador.append(baralho.pop(0))
             if len(baralho) > 0:
                 mao_jogador.append(baralho.pop(0))
-     
-    else:
-        # o jogo termina aqui
+    
+    if len(mao_jogador) == 0 and len(mao_computador) == 0 and len(baralho) == 0:   #verifica o fim do jogo somente depois que os jogadores compram as cartas    
+        # Fim do jogo
         print("\nFim do jogo!")
         if score_jogador > score_computador:
             print("---- PARABÉNS!! Você venceu!!! ----\n")
         elif score_computador > score_jogador:
-            print("---- Vitória do oponente, tente novamente e domine a energia prismática!! ----\n")
+            print("---- Vitória do oponente, tente novamente!! ----\n")
         else:
-            print("---- Empate! ----\n")
-        rodando = False
+            print("---- Empate! ----\n")   
+        rodando = False 
+    
 
     # 3. Lógica de renderização da tela
     # Preenche o fundo da tela com uma cor 
