@@ -25,27 +25,56 @@ class Card:
         self.value = value
         self.attack = attack
 
+
+
+# Variavel que indica se o 10 do trunfo ja foi jogado
+dez_trunfo_jogado = False 
+
+
 #função para jogada do jogador
+# Estado global que controla se o 10 do trunfo já foi jogado
+dez_trunfo_jogado = False  
+
 def jogada_jogador(mao_jogador):
+    global dez_trunfo_jogado  # usamos a variável global dentro da função
+
     print("Sua vez de jogar!")
     print("Suas cartas:")
 
-    for i, carta in enumerate(mao_jogador): #enumerate é uma função que pecorre algo(mão do jogador) e a cada carta ele da a posição(indice i) e o próprio item
+    for i, carta in enumerate(mao_jogador):
         print(f"[{i+1}] - {carta.name} ({carta.category}/valor:{carta.value})")
 
-    #GARANTINDO QUE A ESCOLHA DA CARTA SEJA ENTRE UMA DAS TRÊS 
-    while True: #loop roda até encontrar um break
-        try: #try é como se fosse um "teste de segurança" nesse meu caso vai ser por conta do input que pode da erro ou falhar se eu digitar um texto por exemplo
-            escolha = int(input("Escolha o número da carta que você quer jogar(1 a 3): ")) #essa funçao input() so funciona no terminal, depois que for implementado a janela grafica, vou criar uma linha de código que detecta quando o jogador clica em uma das cartas na tela. se o try funcionar perfeitamento o codigo continua 
-            if 1 <= escolha <=len(mao_jogador):
-                    carta_jogada_jogador = mao_jogador.pop(escolha -1)
-                    print(f"- Você jogou: {carta_jogada_jogador.name} ({carta_jogada_jogador.category}/valor:{carta_jogada_jogador.value})") #pega o numero que digitei, retira a carta dessa posição e salva na variavel carta jogada
-                    return carta_jogada_jogador
+    while True:
+        try:
+            escolha = int(input(f"Escolha o número da carta que você quer jogar (1 a {len(mao_jogador)}): "))
 
+            if 1 <= escolha <= len(mao_jogador):
+                carta_jogada_jogador = mao_jogador[escolha - 1]
+
+                # --- Regra do Ás do trunfo ---
+                if carta_jogada_jogador.value == 11 and carta_jogada_jogador.category == trunfo.category:
+                    if not dez_trunfo_jogado and len(mao_jogador) > 1:
+                        print("⚠️ Atenção: o Ás do trunfo não sai antes da carta que vale 10 pontos")
+                        continue  # volta para escolher outra carta
+
+                # Remove a carta da mão
+                carta_jogada_jogador = mao_jogador.pop(escolha - 1)
+
+                # Atualiza estado se for o 10 do trunfo
+                if carta_jogada_jogador.value == 10 and carta_jogada_jogador.category == trunfo.category:
+                    dez_trunfo_jogado = True
+
+                print(f"- Você jogou: {carta_jogada_jogador.name} ({carta_jogada_jogador.category}/valor:{carta_jogada_jogador.value})")
+                return carta_jogada_jogador  # só retorna a carta, sem precisar de dois valores
             else:
                 print(f"Escolha inválida! Você só tem cartas de 1 a {len(mao_jogador)} para escolher.")
-        except (ValueError, IndexError): # em python valueerror é qaundo tentamos converter um valor para um tipo errado e index error, acontece quando tenta pegar um item de uma lista que não existe exemplo se eu digitar 5 sendo que minha lista vai de [0,1,2]
-            print("Entrada inválida! Por favor, digite um número.") #printa e roda o while true novamente
+        except (ValueError, IndexError):
+            print("Entrada inválida! Por favor, digite um número.")
+
+
+
+
+
 # 3. Criação dos objetos( 30 cartas)
         #Targon (7 cartas) como se fosse o nípe copas na bisca por exemplo, ai no nipe copas tem as cartas de copas
 solvix = Card("Ás Solvix", "Targon", 11, "Algoritmo Instituinte") #como se fosse o ás na bisca
@@ -142,6 +171,8 @@ vez_do_jogador =random.choice(["jogador", "computador"])
 
 # iniciar contagem de rodadas
 numero_da_rodada = 1
+
+
 
 # Loop que vai manter a janela aberta e funcionando:
 rodando = True
