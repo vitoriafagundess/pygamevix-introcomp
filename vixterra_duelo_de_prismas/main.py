@@ -194,6 +194,19 @@ print(f"O valor do Trunfo é: {trunfo.value}")
 score_jogador = 0
 score_computador = 0
 
+#criando o fundo
+FUNDO_VIXTERRA = "fundo_vixterra.png"
+
+try:
+    fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
+    #garante que a imagem tenho o mesmo tamanho da tela
+    fundo_img = pygame.transform.scale(fundo_img,(LARGURA, ALTURA))
+except pygame.error:
+    print(f"Não foi possivel carregar a imagem de fundo: {FUNDO_VIXTERRA}")
+    #se der erro, cria um  fundo  para o jogo não quebrar
+    fundo_img = pygame.Surface((LARGURA, ALTURA))
+    fundo_img.fill((0, 0,0))
+
 #Decidindo quem joga primeiro na rodada 
 vez_do_jogador =random.choice(["jogador", "computador"])
 
@@ -413,8 +426,7 @@ while rodando:  #roda o tempo todo
     
 
     # 3. Lógica de renderização da tela
-    # Preenche o fundo da tela com uma cor 
-    tela.fill((255, 255, 0)) # código RGB 
+    tela.blit(fundo_img, (0, 0)) # código RGB 
     # Atualiza a tela para mostar oque foi desenhado
     pygame.display.flip()
 
