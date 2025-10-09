@@ -195,7 +195,7 @@ score_jogador = 0
 score_computador = 0
 
 #criando o fundo
-FUNDO_VIXTERRA = "fundo_vixterra.png"
+FUNDO_VIXTERRA = "fundoo.png"
 
 try:
     fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
