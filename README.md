@@ -45,7 +45,7 @@ O baralho √© composto por 30 cartas com valores de ponto fixos, seguindo o padr√
 
 * **Unidade Hexteck de Targon**  - **0 pontos**
 * **Isca Hexteck de Targon**  - **0 pontos**
-*  **Condutor Prismatico de Targon - **0 pontos**
+* **Condutor Prismatico de Targon - **0 pontos**
 
 #### **Piltover**
 * **Caityslug** (√Ås) - Ataque: **Disparo Calibrado** - **11 pontos**
@@ -69,4 +69,4 @@ O baralho √© composto por 30 cartas com valores de ponto fixos, seguindo o padr√
   
 * **Unidade Hexteck de Zaun**  - **0 pontos**
 * **Isca Hexteck de Zaun**  - **0 pontos**
-*  **Condutor Prismatico de Zaun - **0 pontos**
+* **Condutor Prismatico de Zaun - **0 pontos**
