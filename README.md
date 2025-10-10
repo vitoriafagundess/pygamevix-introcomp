@@ -34,7 +34,7 @@ A **pontuação** no jogo **simboliza o domínio dessa energia prismática**. O 
 
 ### 🃏 O Baralho Completo
 
-O baralho é composto por 30 cartas com valores de ponto fixos, seguindo o padrão da Bisca.
+O baralho é composto por 24 cartas com valores de ponto fixos, seguindo o padrão da Bisca.
 
 #### **Targon**
 * **Solvix** (Ás) - Ataque: **Algoritmo Instituinte** - **11 pontos**
