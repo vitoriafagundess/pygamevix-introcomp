@@ -24,7 +24,7 @@ A **pontuação** no jogo **simboliza o domínio dessa energia prismática**. O 
 
 ### 🎮 Regras do Jogo
 
-* **Baralho:** 30 cartas no total, divididas igualmente entre Targon, Piltover e Zaun.
+* **Baralho:** 24 cartas no total, divididas igualmente entre Targon, Piltover e Zaun.
 * **Mão:** Cada jogador começa com 3 cartas.
 * **Turno:** Joga-se uma carta de cada vez. A cada rodada, ambos os jogadores compram uma nova carta do baralho.
 * **Vencendo a Rodada:**
