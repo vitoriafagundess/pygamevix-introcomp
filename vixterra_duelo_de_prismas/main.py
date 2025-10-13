@@ -195,7 +195,7 @@ score_jogador = 0
 score_computador = 0
 
 #criando o fundo
-FUNDO_VIXTERRA = "fundoo.png"
+FUNDO_VIXTERRA = "vixterra_iniciar.png"
 
 try:
     fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
@@ -206,6 +206,171 @@ except pygame.error:
     #se der erro, cria um  fundo  para o jogo não quebrar
     fundo_img = pygame.Surface((LARGURA, ALTURA))
     fundo_img.fill((0, 0,0))
+
+# --- CONFIGURAÇÃO DA TELA INICIAL COM FUNDO ANIMADO E LOGO ---
+
+LOGO_PNG = "nome_vixterra.png"  # nome do arquivo da logo
+
+# Carrega fundo 
+try:
+    fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
+    fundo_img = pygame.transform.scale(fundo_img, (1080, ALTURA))
+except pygame.error:
+    print(f"Não foi possivel carregar a imagem de fundo: {FUNDO_VIXTERRA}")
+    fundo_img = pygame.Surface((LARGURA, ALTURA))
+    fundo_img.fill((0, 0, 0))
+
+# Carrega logo com canal alpha (transparência)
+try:
+    logo = pygame.image.load(LOGO_PNG).convert_alpha()
+    # opções de escala: deixa a logo proporcional ao tamanho da tela (ex: 30% da largura)
+    logo_largura = int(LARGURA * 0.40)
+    logo_altura = int(logo.get_height() * (logo_largura / logo.get_width())) #calcula a altura proporcional para não deformar a imagem
+    logo = pygame.transform.smoothscale(logo, (logo_largura, logo_altura)) 
+except pygame.error:
+    print(f"Não foi possivel carregar a logo: {LOGO_PNG}")
+    logo = None
+
+# Para scroll horizontal contínuo do fundo: vamos desenhar duas cópias lado a lado
+bg_x1 = 0
+bg_x2 = 2048 #largura real da imagem
+scroll_speed = 20  # pixels por segundo (ajusta para ficar mais rápido/lento)
+
+# Parâmetros da splash
+SPLASH_DURATION = 3000  # ms (duração total da splash)
+FADE_IN_DURATION = 900  # ms (duração do fade-in da logo)
+clock = pygame.time.Clock()
+splash_start = pygame.time.get_ticks()
+
+# Loop da splash (antes do loop principal do jogo)
+# --- TELA INICIAL (SPLASH) ---
+# --- TELA INICIAL (SPLASH) ---
+splash_rodando = True
+MAX_SCROLL = 200       # pixels que o fundo vai se mover antes de congelar
+scroll_total = 0       # deslocamento acumulado
+splash_congelada = False
+
+# temporizador para congelar o fundo após alguns segundos
+tempo_splash = 0       # tempo acumulado em ms
+TEMPO_SCROLL = 2000    # tempo que o fundo vai rolar antes de congelar (2 segundos)
+
+splash_start = pygame.time.get_ticks()  # marca início da splash
+
+while splash_rodando:
+    dt = clock.tick(60)  # controla FPS
+    tempo_splash += dt   # acumula tempo da splash
+
+    # --- EVENTOS ---
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit()
+        elif evento.type == pygame.KEYDOWN:
+            # só permite sair se a splash já estiver congelada
+            if evento.key == pygame.K_SPACE and splash_congelada:
+                splash_rodando = False
+
+    # --- ATUALIZA FUNDO COM SCROLL ---
+    if not splash_congelada:
+        desloc = scroll_speed * (dt / 1000.0)
+        scroll_total += desloc
+
+        # congela o fundo após TEMPO_SCROLL
+        if tempo_splash >= TEMPO_SCROLL:
+            splash_congelada = True
+            scroll_total = min(scroll_total, MAX_SCROLL)
+
+    # desenha fundo
+    tela.blit(fundo_img, (-scroll_total, 0))
+
+    # --- DESENHA LOGO COM FADE-IN ---
+    if logo:
+        agora = pygame.time.get_ticks()
+        elapsed = agora - splash_start
+        if elapsed < FADE_IN_DURATION:
+            alpha = int(255 * (elapsed / FADE_IN_DURATION))
+        else:
+            alpha = 255
+        logo_surf = logo.copy()
+        logo_surf.set_alpha(alpha)
+        logo_x = (LARGURA - logo.get_width()) // 2
+        logo_y = int(ALTURA * 0.08)
+        tela.blit(logo_surf, (logo_x, logo_y))
+
+    # --- TEXTO PISCANTE "PRESSIONE ESPAÇO" ---
+    agora = pygame.time.get_ticks()
+    if (agora // 1200) % 2 == 0: #quanto menor o numero mais rapido pisca
+        fonte = pygame.font.SysFont(None, 28)
+        sombra = fonte.render("Pressione ESPAÇO para continuar!", True, (0,0,0))
+        tx = (LARGURA - sombra.get_width()) // 2
+        ty = int(ALTURA * 0.85)
+        tela.blit(sombra, (tx+1, ty+1))
+        texto = fonte.render("Pressione ESPAÇO para continuar!", True, (255,255,255))
+        tela.blit(texto, (tx, ty))
+
+    pygame.display.flip()
+
+# Ao sair da splash, segue normalmente para o loop principal do jogo...
+# --- TELA DE MENU PRINCIPAL ---
+MENU_PRINCIPAL_IMG = "menu_vixterra.png"
+try:
+    menu_principal = pygame.image.load(MENU_PRINCIPAL_IMG).convert()
+    menu_principal = pygame.transform.scale(menu_principal, (LARGURA, ALTURA))
+except pygame.error:
+    print(f"Não foi possível carregar a imagem: {MENU_PRINCIPAL_IMG}")
+    menu_principal = pygame.Surface((LARGURA, ALTURA))
+    menu_principal.fill((50, 50, 50))  # fundo cinza se der erro
+
+# --- MENU INTERATIVO ---
+menu_ativo = True  # variável de controle para manter o menu ativo
+
+# Criar retângulos para botões interativos
+botao_voltar_rect = pygame.Rect(20, ALTURA - 40 - 20, 120, 40)
+  # botão "Voltar" (x, y, largura, altura)
+aba_cartas_rect = pygame.Rect(400, 300, 200, 50)  # botão "Cartas" (x, y, largura, altura)
+
+# fonte para os textos dos botões
+fonte = pygame.font.SysFont(None, 28)
+
+while menu_ativo:  # loop principal do menu
+    for evento in pygame.event.get():  # percorre todos os eventos do pygame
+        if evento.type == pygame.QUIT:  # se o jogador clicar no X da janela
+            pygame.quit()  # fecha o pygame
+            raise SystemExit()  # encerra o programa
+        elif evento.type == pygame.MOUSEBUTTONDOWN:  # se um botão do mouse for pressionado
+            if evento.button == 1:  # verifica se é o botão esquerdo do mouse
+                # verifica se clicou no botão "Voltar"
+                if botao_voltar_rect.collidepoint(evento.pos):  # evento.pos retorna (x,y) do clique
+                    menu_ativo = False  # fecha o menu
+                    splash_rodando = True  # opcional: volta para a splash
+                    splash_start = pygame.time.get_ticks()  # reinicia o timer da splash
+                # verifica se clicou na aba de cartas
+                elif aba_cartas_rect.collidepoint(evento.pos):
+                    print("Abrir tela das cartas")  # aqui você chamaria a função que mostra as cartas
+                    # Ex: cartas_loop() ou mudar variável de tela
+
+    # desenha a imagem de fundo do menu (se tiver)
+    tela.blit(menu_principal, (0, 0))
+
+    # --- DESENHAR BOTÃO "Voltar" ---
+    pygame.draw.rect(tela, (0,255, 255), botao_voltar_rect)  # desenha o retângulo cor
+    texto_voltar = fonte.render("Voltar", True, (255, 255, 255))  # cria o texto do botão
+    # centraliza o texto dentro do retângulo
+    tx = botao_voltar_rect.x + (botao_voltar_rect.width - texto_voltar.get_width()) // 2
+    ty = botao_voltar_rect.y + (botao_voltar_rect.height - texto_voltar.get_height()) // 2
+    tela.blit(texto_voltar, (tx, ty))  # desenha o texto na tela
+
+    # --- DESENHAR ABA "Cartas" ---
+    pygame.draw.rect(tela, (0, 100, 200), aba_cartas_rect)  # retângulo azul
+    texto_aba = fonte.render("Cartas", True, (255, 255, 255))  # cria o texto da aba
+    # centraliza o texto na aba
+    tx = aba_cartas_rect.x + (aba_cartas_rect.width - texto_aba.get_width()) // 2
+    ty = aba_cartas_rect.y + (aba_cartas_rect.height - texto_aba.get_height()) // 2
+    tela.blit(texto_aba, (tx, ty))  # desenha o texto
+
+    pygame.display.flip()  # atualiza a tela
+    clock.tick(60)  # limita a 60 FPS
+
 
 #Decidindo quem joga primeiro na rodada 
 vez_do_jogador =random.choice(["jogador", "computador"])
