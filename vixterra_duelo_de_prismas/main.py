@@ -270,20 +270,31 @@ except pygame.error:
     menu_principal = pygame.Surface((LARGURA, ALTURA))
     menu_principal.fill((50, 50, 50))  # fundo cinza se der erro
 
+### CARREGANDO FUNDO DA TELA DE CARTAS ###
+TELA_CARTAS_FUNDO_IMG = "fundo_cartas_vixterra.png"
+try:
+    fundo_tela_cartas = pygame.image.load(TELA_CARTAS_FUNDO_IMG).convert()
+    fundo_tela_cartas = pygame.transform.scale(fundo_tela_cartas, (LARGURA,ALTURA))
+except pygame.error:
+    print(f"Não foi possivel carregar a imagem: {TELA_CARTAS_FUNDO_IMG}")
+    fundo_tela_cartas = pygame.Surface((LARGURA, ALTURA))
+    fundo_tela_cartas.fill((20, 0, 30)) #um fundo roxo escuro caso a imagem nao carregue
+
 # --- MENU INTERATIVO ---
 menu_ativo = True  # variável de controle para manter o menu ativo
 
 # Criar retângulos para botões interativos
 botao_voltar_rect = pygame.Rect(20, ALTURA - 40 - 20, 120, 40)
   # botão "Voltar" (x, y, largura, altura)
-aba_cartas_rect = pygame.Rect(400, 300, 200, 50)  # botão "Cartas" (x, y, largura, altura)
+aba_cartas_rect = pygame.Rect(400, 600, 200, 50)  # botão "Cartas" (x, y, largura, altura)
 
 #botao jogar
-botao_jogar_rect = pygame.Rect(400, ALTURA - 100, 120, 40)  # x, y, largura, altura
+botao_jogar_rect = pygame.Rect(400, 500, 200, 50)  # x, y, largura, altura
 
 # fonte para os textos dos botões
 fonte = pygame.font.SysFont(None, 28)
-
+fonte_titulo = pygame.font.SysFont("Palatino Linotype", 26, bold=True)
+fonte_peq = pygame.font.SysFont(None, 20)
     
 
 
@@ -298,6 +309,7 @@ numero_da_rodada = 1
 # Loop que vai manter a janela aberta e funcionando:
 jogo_ativo = False
 rodando = True
+tela_cartas_ativa = False
 
 while rodando: 
     dt = clock.tick(60)
@@ -334,7 +346,16 @@ while rodando:
 
                 # Botão "Cartas"
                 elif aba_cartas_rect.collidepoint(evento.pos):
-                    print("Abrir tela das cartas") 
+                    #print("Abrir tela das cartas")
+                    menu_ativo = False
+                    tela_cartas_ativa = True 
+                
+        elif tela_cartas_ativa:
+            if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+                # Verifica se o clique foi no mesmo retângulo do botão "Voltar"
+                if botao_voltar_rect.collidepoint(evento.pos):
+                    tela_cartas_ativa = False # Desliga a tela de cartas
+                    menu_ativo = True         # Liga o menu novamente
 
     # 2. LÓGICA DE ATUALIZAÇÃO E DESENHO
     
@@ -379,6 +400,18 @@ while rodando:
         
         # Desenho
         tela.blit(menu_principal, (0, 0))
+        
+        frase = "Boas vindas a Vixterra! Duele pelo domínio da energia prismática." # <-- ESCOLHA SUA FRASE PREFERIDA AQUI
+        
+        # Renderiza a sombra
+        sombra_surf = fonte_titulo.render(frase, True, (0, 0, 0))
+        sombra_rect = sombra_surf.get_rect(center=(LARGURA // 2 + 2, 42)) # Posição da sombra (deslocada)
+        tela.blit(sombra_surf, sombra_rect)
+
+        # Renderiza o texto principal
+        texto_surf = fonte_titulo.render(frase, True, (230, 230, 255)) # Cor de lavanda/branco
+        texto_rect = texto_surf.get_rect(center=(LARGURA // 2, 40)) # Posição do texto
+        tela.blit(texto_surf, texto_rect)
 
         pygame.draw.rect(tela, (0,255, 255), botao_voltar_rect) 
         texto_voltar = fonte.render("Voltar", True, (255, 255, 255))
@@ -400,6 +433,19 @@ while rodando:
 
         pygame.display.flip()
 
+
+    # --- NOVO ESTADO: TELA DE CARTAS ---
+    elif tela_cartas_ativa:
+        tela.blit(fundo_tela_cartas, (0, 0)) # Desenha o fundo
+            
+            ### NOVO: Desenha o botão Voltar ###
+        pygame.draw.rect(tela, (0, 255, 255), botao_voltar_rect)
+        texto_voltar = fonte.render("Voltar", True, (0, 0, 0)) # Texto em preto
+        tx = botao_voltar_rect.x + (botao_voltar_rect.width - texto_voltar.get_width()) // 2
+        ty = botao_voltar_rect.y + (botao_voltar_rect.height - texto_voltar.get_height()) // 2
+        tela.blit(texto_voltar, (tx, ty))
+
+        pygame.display.flip() # Atualiza a tela
     
     # --- ESTADO C: JOGO ATIVO ---
     elif jogo_ativo:
@@ -427,192 +473,113 @@ while rodando:
             pygame.display.flip() 
         
     
-    # --- ESTADO B: MENU PRINCIPAL ---
-    elif menu_ativo:
-        # --- EVENTOS DO MENU ---
-        for evento in pygame.event.get(): 
-            if evento.type == pygame.QUIT:
-                rodando = False
-            elif evento.type == pygame.MOUSEBUTTONDOWN: 
-                if evento.button == 1:
-                    # Botão "Voltar" (volta para Splash)
-                    if botao_voltar_rect.collidepoint(evento.pos): 
-                        menu_ativo = False
-                        splash_rodando = True
-                        # Reseta as variáveis da Splash para que ela role novamente
-                        tempo_splash = 0
-                        splash_congelada = False
-                        splash_start = pygame.time.get_ticks() 
-                        scroll_total = 0 # Volta o scroll para zero
-                    
-                    # Botão "Jogar" (vai para o Jogo)
-                    elif botao_jogar_rect.collidepoint(evento.pos):
-                        jogo_ativo = True
-                        menu_ativo = False
-        
-        # --- DESENHO DO MENU ---
-        tela.blit(menu_principal, (0, 0))
 
-        # Desenhar BOTÕES
-        pygame.draw.rect(tela, (0,255, 255), botao_voltar_rect) 
-        texto_voltar = fonte.render("Voltar", True, (255, 255, 255))
-        tx = botao_voltar_rect.x + (botao_voltar_rect.width - texto_voltar.get_width()) // 2
-        ty = botao_voltar_rect.y + (botao_voltar_rect.height - texto_voltar.get_height()) // 2
-        tela.blit(texto_voltar, (tx, ty))
-
-        pygame.draw.rect(tela, (0, 100, 200), aba_cartas_rect) 
-        texto_aba = fonte.render("Cartas", True, (255, 255, 255))
-        tx = aba_cartas_rect.x + (aba_cartas_rect.width - texto_aba.get_width()) // 2
-        ty = aba_cartas_rect.y + (aba_cartas_rect.height - texto_aba.get_height()) // 2
-        tela.blit(texto_aba, (tx, ty))
-
-        pygame.draw.rect(tela, (0, 200, 0), botao_jogar_rect)
-        texto_jogar = fonte.render("Jogar", True, (255, 255, 255))
-        tx = botao_jogar_rect.x + (botao_jogar_rect.width - texto_jogar.get_width()) // 2
-        ty = botao_jogar_rect.y + (botao_jogar_rect.height - texto_jogar.get_height()) // 2
-        tela.blit(texto_jogar, (tx, ty))
-
-        pygame.display.flip()
-
-    
-    # --- ESTADO C: JOGO ATIVO ---
-    elif jogo_ativo:
-            # CABEÇALHO DA RODADA
-            print(f"\n --- Rodada {numero_da_rodada} ---")
-            print(f"TRUNFO: {trunfo.name} valor: {trunfo.value}\n")
-            numero_da_rodada += 1
-            
-            
-            # 2. LÓGICA DA RODADA
-            # verifica se os jogadores tem cartas
-            if len(mao_jogador) > 0 and len(mao_computador) > 0:  
-                    
-                # A lógica para a rodada (jogar cartas, etc.) virá aqui!
-                        # --- Montar retângulos clicáveis para a mão do jogador ---
-                cartas_retangulos = []                             # lista de pygame.Rect (áreas clicáveis)
-                margem_x = 100                                    # posição inicial no eixo X (margem esquerda)
-                y_cartas = ALTURA - 220                           # posição Y das cartas na tela (um pouco acima da base)
-                larg_card, alt_card = 120, 180                    # largura e altura de cada carta (ajuste se quiser)
-
-                for idx, carta in enumerate(mao_jogador):          # percorre cada carta da mão do jogador
-                    x = margem_x + idx * (larg_card + 20)          # calcula posição X com espaçamento entre cartas
-                    rect = pygame.Rect(x, y_cartas, larg_card, alt_card)  # cria o retângulo clicável da carta
-                    cartas_retangulos.append(rect)                 # adiciona o retângulo à lista
-
-                    # --- Desenhar a carta (provisório, até ter imagens) ---
-                    pygame.draw.rect(tela, (200, 200, 200), rect)  # desenha o retângulo cinza (a carta)
-                    fonte_peq = pygame.font.SysFont(None, 20)      
-                    texto_nome = fonte_peq.render(carta.name, True, (0, 0, 0))  # mostra o nome da carta
-                    tela.blit(texto_nome, (x + 6, y_cartas + 6))  # desenha o nome dentro da "carta"
-
-                pygame.display.flip()  # atualiza a tela para o jogador ver as cartas
-
-                #LOGICA PARA VER DE QUEM É A VEZ
+            #LOGICA PARA VER DE QUEM É A VEZ
                 
-                if vez_do_jogador == "jogador": #Quando o jogador começa a rodada:
+            if vez_do_jogador == "jogador": #Quando o jogador começa a rodada:
                     # ---- TURNO  DO JOGADOR ----
                     #carta_jogada_jogador = jogada_jogador(mao_jogador) #chamei a função jogadada_jogador so funciona no terminal isso
                     # desenhar as áreas clicáveis das cartas antes (ver passo 2)
-                    carta_jogada_jogador = jogada_jogador_mouse(mao_jogador, cartas_retangulos)
+                carta_jogada_jogador = jogada_jogador_mouse(mao_jogador, cartas_retangulos)
 
                     
-                    if carta_jogada_jogador.value == 10 and carta_jogada_jogador.category == trunfo.category:
-                        dez_trunfo_jogado = True
+                if carta_jogada_jogador.value == 10 and carta_jogada_jogador.category == trunfo.category:
+                    dez_trunfo_jogado = True
 
 
                     # --- TURNO DO COMPUTADOR ---
-                    print("\nVez do computador...\n")
+                print("\nVez do computador...\n")
 
                     # Inicializamos a variável para garantir que ela sempre exista
-                    carta_jogada_computador = None
+                carta_jogada_computador = None
 
                     # Pega a lista de cartas que a IA pode jogar (respeitando a regra do Ás)
-                    mao_computador_validas = filtrar_as_trunfo(mao_computador, mao_jogador, baralho, trunfo)
+                mao_computador_validas = filtrar_as_trunfo(mao_computador, mao_jogador, baralho, trunfo)
 
                     # --- LÓGICA REESTRUTURADA ---
                     # A IA vai testar cada estratégia em ordem de prioridade.
 
                     # ESTRATÉGIA 1 : Contra-atacar cartas de valor alto (10 ou 11) com um trunfo.
-                    if carta_jogada_jogador.value >= 10 and carta_jogada_jogador.category != trunfo.category:
-                        trunfos_validos = [c for c in mao_computador_validas if c.category == trunfo.category]
-                        if trunfos_validos:
+                if carta_jogada_jogador.value >= 10 and carta_jogada_jogador.category != trunfo.category:
+                    trunfos_validos = [c for c in mao_computador_validas if c.category == trunfo.category]
+                    if trunfos_validos:
                             # Joga o menor trunfo possível para economizar os maiores
                             carta_jogada_computador = min(trunfos_validos, key=lambda c: c.value)
 
                     # ESTRATÉGIA 2 : Se a estratégia 1 não foi usada, tenta vencer com uma carta maior do mesmo naipe.
-                    if carta_jogada_computador is None: # Só entra aqui se a estratégia anterior falhou
-                        cartas_mesmo_nipe = [c for c in mao_computador_validas if c.category == carta_jogada_jogador.category]
-                        if cartas_mesmo_nipe:
-                            cartas_maiores = [c for c in cartas_mesmo_nipe if c.value > carta_jogada_jogador.value]
-                            if cartas_maiores:
+                if carta_jogada_computador is None: # Só entra aqui se a estratégia anterior falhou
+                    cartas_mesmo_nipe = [c for c in mao_computador_validas if c.category == carta_jogada_jogador.category]
+                    if cartas_mesmo_nipe:
+                        cartas_maiores = [c for c in cartas_mesmo_nipe if c.value > carta_jogada_jogador.value]
+                        if cartas_maiores:
                                 # Se tem cartas que vencem, joga a menor delas
-                                carta_jogada_computador = min(cartas_maiores, key=lambda c: c.value)
-                            else:
+                            carta_jogada_computador = min(cartas_maiores, key=lambda c: c.value)
+                        else:
                                 # Se não pode vencer, joga a menor carta que tiver do mesmo naipe (para perder pouco)
-                                carta_jogada_computador = min(cartas_mesmo_nipe, key=lambda c: c.value)
+                            carta_jogada_computador = min(cartas_mesmo_nipe, key=lambda c: c.value)
 
                     # ESTRATÉGIA 3 (Fallback): Se nenhuma das anteriores funcionou (porque não tinha as cartas certas).
-                    if carta_jogada_computador is None:
+                if carta_jogada_computador is None:
                         # Se não tem cartas do mesmo naipe, a prioridade é usar o menor trunfo
-                        cartas_trunfo_validas = [c for c in mao_computador_validas if c.category == trunfo.category]
-                        if cartas_trunfo_validas:
-                            carta_jogada_computador = min(cartas_trunfo_validas, key=lambda c: c.value)
-                        else:
+                    cartas_trunfo_validas = [c for c in mao_computador_validas if c.category == trunfo.category]
+                    if cartas_trunfo_validas:
+                        carta_jogada_computador = min(cartas_trunfo_validas, key=lambda c: c.value)
+                    else:
                             # Se não tem mesmo naipe NEM trunfo, joga a carta de menor valor que tiver na mão
                             # para perder o mínimo de pontos possível.
-                            carta_jogada_computador = min(mao_computador_validas, key=lambda c: c.value)
+                        carta_jogada_computador = min(mao_computador_validas, key=lambda c: c.value)
                     
                     # Executa a jogada que foi decidida em uma das estratégias acima
-                    mao_computador.remove(carta_jogada_computador)
-                    print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+                mao_computador.remove(carta_jogada_computador)
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
                         
         
-                else: #-----Quando o computador começa a rodada:-------
+            else: #-----Quando o computador começa a rodada:-------
                     # --- TURNO DO COMPUTADOR ---
-                    print("\nVez do computador...")
+                print("\nVez do computador...")
 
                     # Filtra cartas válidas respeitando o bloqueio do Ás do trunfo
-                    mao_computador_validas = filtrar_as_trunfo(mao_computador, mao_jogador, baralho, trunfo)
+                mao_computador_validas = filtrar_as_trunfo(mao_computador, mao_jogador, baralho, trunfo)
 
                     # Prioridades de jogada:
                     # 1. Carta de baixo custo (valor >0 e <=3)
-                    cartas_baixo_custo = [c for c in mao_computador_validas if 0 < c.value <= 3]
+                cartas_baixo_custo = [c for c in mao_computador_validas if 0 < c.value <= 3]
 
                     # 2. Carta que não vale nada (valor 0)
-                    cartas_sem_valor = [c for c in mao_computador_validas if c.value == 0]
+                cartas_sem_valor = [c for c in mao_computador_validas if c.value == 0]
 
                     # 3. Cartas de trunfo válidas (menos o Ás bloqueado)
-                    cartas_trunfo_validas = [c for c in mao_computador_validas if c.category == trunfo.category]
+                cartas_trunfo_validas = [c for c in mao_computador_validas if c.category == trunfo.category]
 
                     # 4. Cartas altas fora do trunfo
-                    cartas_altas_nao_trunfo = [c for c in mao_computador_validas if c.value > 3 and c.category != trunfo.category]
+                cartas_altas_nao_trunfo = [c for c in mao_computador_validas if c.value > 3 and c.category != trunfo.category]
 
                     # Escolher a carta seguindo a prioridade
-                    if cartas_baixo_custo:
-                        carta_jogada_computador = min(cartas_baixo_custo, key=lambda c: c.value)  # menor carta de baixo custo
-                    elif cartas_sem_valor:
-                        carta_jogada_computador = cartas_sem_valor[0]  # joga qualquer carta sem valor
-                    elif cartas_trunfo_validas:
-                        carta_jogada_computador = min(cartas_trunfo_validas, key=lambda c: c.value)  # menor trunfo, respeitando Ás
-                    elif cartas_altas_nao_trunfo:
-                        carta_jogada_computador = max(cartas_altas_nao_trunfo, key=lambda c: c.value)  # maior carta fora do trunfo
-                    else:
+                if cartas_baixo_custo:
+                    carta_jogada_computador = min(cartas_baixo_custo, key=lambda c: c.value)  # menor carta de baixo custo
+                elif cartas_sem_valor:
+                    carta_jogada_computador = cartas_sem_valor[0]  # joga qualquer carta sem valor
+                elif cartas_trunfo_validas:
+                    carta_jogada_computador = min(cartas_trunfo_validas, key=lambda c: c.value)  # menor trunfo, respeitando Ás
+                elif cartas_altas_nao_trunfo:
+                    carta_jogada_computador = max(cartas_altas_nao_trunfo, key=lambda c: c.value)  # maior carta fora do trunfo
+                else:
                         # Se nada se encaixa, joga o maior trunfo restante (incluindo Ás se for último)
-                        carta_jogada_computador = max(mao_computador, key=lambda c: c.value)
+                    carta_jogada_computador = max(mao_computador, key=lambda c: c.value)
 
                     # Remove a carta da mão
-                    mao_computador.remove(carta_jogada_computador)
+                mao_computador.remove(carta_jogada_computador)
 
                     # Atualiza estado se for o 10 do trunfo
-                    if carta_jogada_computador.value == 10 and carta_jogada_computador.category == trunfo.category:
-                        dez_trunfo_jogado = True
+                if carta_jogada_computador.value == 10 and carta_jogada_computador.category == trunfo.category:
+                    dez_trunfo_jogado = True
 
                     # Mostra a carta jogada
-                    print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
+                print(f"- O computador jogou: {carta_jogada_computador.name} ({carta_jogada_computador.category}/valor:{carta_jogada_computador.value})\n")
 
                     # --- TURNO DO JOGADOR ---
                     # desenhar as áreas clicáveis das cartas antes (ver passo 2)
-                    carta_jogada_jogador = jogada_jogador_mouse(mao_jogador, cartas_retangulos)
+                carta_jogada_jogador = jogada_jogador_mouse(mao_jogador, cartas_retangulos)
 
                         
 
@@ -620,92 +587,92 @@ while rodando:
                 
                 # LOGICA PARA DECIDIR O VENCEDOR
                 #mesa para a rodada
-                mesa = [carta_jogada_jogador, carta_jogada_computador] #lista chamada mesa e adiciona as cartas do computador e do jogador
+            mesa = [carta_jogada_jogador, carta_jogada_computador] #lista chamada mesa e adiciona as cartas do computador e do jogador
 
                 # DECIDE O NIPE DA RODADA(O DA PRIMEIRA CARTA DO JOGADOR)
-                naipe_da_rodada = carta_jogada_jogador.category
+            naipe_da_rodada = carta_jogada_jogador.category
 
                 #Encontra as cartas trunfo na mesa, passo crucial para que o jogo saiba se a regra de trunfo se aplica ou não
-                cartas_trunfo_na_mesa = [carta for carta in mesa if carta.category == trunfo.category]  
+            cartas_trunfo_na_mesa = [carta for carta in mesa if carta.category == trunfo.category]  
 
-                vencedor = None 
+            vencedor = None 
 
                 
-                if len(cartas_trunfo_na_mesa) > 0:    #verifar se a lista de trunfo na mesa ta vazia ou nao
+            if len(cartas_trunfo_na_mesa) > 0:    #verifar se a lista de trunfo na mesa ta vazia ou nao
                     #Lógica para quando há trunfo na mesa
                     #1. encontrar a carta trunfo de maior valor na mesa
-                    carta_vencedora = max(cartas_trunfo_na_mesa, key=lambda carta: carta.value) # função lambda cria a regra de que a função max() deve comparar as cartas apenas com base no seu valor(pontuação)
+                carta_vencedora = max(cartas_trunfo_na_mesa, key=lambda carta: carta.value) # função lambda cria a regra de que a função max() deve comparar as cartas apenas com base no seu valor(pontuação)
                     #2. decide quem é o vencedor com base na carta
-                    if carta_vencedora == carta_jogada_jogador:
-                        vencedor = "jogador"
-                    else:
-                        vencedor = "computador"
+                if carta_vencedora == carta_jogada_jogador:
+                    vencedor = "jogador"
                 else:
+                    vencedor = "computador"
+            else:
                     # lógica para quando não há trunfo na mesa
                     # se o nipe da carta do computador é mesmo da rodada 
-                    if carta_jogada_computador.category == naipe_da_rodada:
+                if carta_jogada_computador.category == naipe_da_rodada:
                         #A carta de maior valor vence
-                        if carta_jogada_computador.value > carta_jogada_jogador. value:
-                            vencedor = "computador"
-                        else:
-                            vencedor = "jogador"
-                    # se o naipe da carta do computador é diferente, o jogador vence
+                    if carta_jogada_computador.value > carta_jogada_jogador. value:
+                        vencedor = "computador"
                     else:
                         vencedor = "jogador"
+                    # se o naipe da carta do computador é diferente, o jogador vence
+                else:
+                    vencedor = "jogador"
 
                 
                 
                 #  PONTUAÇÃO E COMPRAR NOVAS CARTAS
                     #soma pontos
-                if vencedor == "jogador":
-                    for carta in mesa:
-                        score_jogador += carta.value #soma o valor da carta ao score do jogador
-                else:
-                    for carta in mesa:
-                        score_computador += carta.value 
+            if vencedor == "jogador":
+                for carta in mesa:
+                    score_jogador += carta.value #soma o valor da carta ao score do jogador
+            else:
+                for carta in mesa:
+                    score_computador += carta.value 
 
-                if vencedor == "jogador":
-                    print(f"Você venceu a rodada!\n")
-                    print(f"Seu score: {score_jogador}\nScore oponente: {score_computador}")
-                else:
-                    print(f"O computador venceu a rodada!\n")
-                    print(f"Score do oponente: {score_computador}\nSeu Score: {score_jogador}")
+            if vencedor == "jogador":
+                print(f"Você venceu a rodada!\n")
+                print(f"Seu score: {score_jogador}\nScore oponente: {score_computador}")
+            else:
+                print(f"O computador venceu a rodada!\n")
+                print(f"Score do oponente: {score_computador}\nSeu Score: {score_jogador}")
 
 
                 #define quem joga primeiro na próxima rodada
-                if vencedor == "jogador":
-                    vez_do_jogador = "jogador"
-                else:
-                    vez_do_jogador = "computador"
+            if vencedor == "jogador":
+                vez_do_jogador = "jogador"
+            else:
+                vez_do_jogador = "computador"
 
 
                     #comprando as cartas e verifica quem é o vencedor da rodada e faz com que ele compre a carta primeiro
-            if len(baralho) > 0:
-                if vencedor == "jogador":
-                    mao_jogador.append(baralho.pop(0)) #função pop pega a carta do baralho e adiciona á mao do jogador
-                    if len(baralho) > 0:
-                        mao_computador.append(baralho.pop(0))
-                else:
+        if len(baralho) > 0:
+            if vencedor == "jogador":
+                mao_jogador.append(baralho.pop(0)) #função pop pega a carta do baralho e adiciona á mao do jogador
+                if len(baralho) > 0:
                     mao_computador.append(baralho.pop(0))
-                    if len(baralho) > 0:
-                        mao_jogador.append(baralho.pop(0))
+            else:
+                mao_computador.append(baralho.pop(0))
+                if len(baralho) > 0:
+                    mao_jogador.append(baralho.pop(0))
             
-            if len(mao_jogador) == 0 and len(mao_computador) == 0 and len(baralho) == 0:   #verifica o fim do jogo somente depois que os jogadores compram as cartas    
+        if len(mao_jogador) == 0 and len(mao_computador) == 0 and len(baralho) == 0:   #verifica o fim do jogo somente depois que os jogadores compram as cartas    
                 # Fim do jogo
-                print("\nFim do jogo!")
-                if score_jogador > score_computador:
-                    print("---- PARABÉNS!! Você venceu!!! ----\n")
-                elif score_computador > score_jogador:
-                    print("---- Vitória do oponente, tente novamente!! ----\n")
-                else:
-                    print("---- Empate! ----\n")   
-                rodando = False 
-            
+            print("\nFim do jogo!")
+            if score_jogador > score_computador:
+                print("---- PARABÉNS!! Você venceu!!! ----\n")
+            elif score_computador > score_jogador:
+                print("---- Vitória do oponente, tente novamente!! ----\n")
+            else:
+                print("---- Empate! ----\n")   
+            rodando = False 
+                
 
             # 3. Lógica de renderização da tela
-            tela.blit(fundo_img, (0, 0)) # código RGB 
+        tela.blit(fundo_img, (0, 0)) # código RGB 
             # Atualiza a tela para mostar oque foi desenhado
-            pygame.display.flip()
+        pygame.display.flip()
 
     
 
