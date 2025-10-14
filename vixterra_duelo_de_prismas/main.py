@@ -19,11 +19,13 @@ pygame.display.set_caption("Vixterra: Duelo de Prismas")
 
 # 2. As "plantas" das classes(modelo, define o que todas as "casas construidas" a partir dela devem ter, 2 quartos,  1 sala...) 
 class Card:
-    def __init__(self, name, category, value, attack):  # init É a função que inicializa o seu objeto, garantindo que ele já nasça com todas as características que você definiu.
+    def __init__(self, name, category, value, attack,image_file,):  # init É a função que inicializa o seu objeto, garantindo que ele já nasça com todas as características que você definiu.
         self.name = name                     #self é a maneira que o python tem de se referir ao objeto que esta sendo criado
         self.category = category 
         self.value = value
         self.attack = attack
+        self.image_file = image_file #Guarda  o caminho do arquivo
+        self.image = None #Guarda a imagem carregada pelo pygame
 
 
 
@@ -103,49 +105,63 @@ def filtrar_as_trunfo(mao_computador, mao_jogador, baralho, trunfo):
 
 # 3. Criação dos objetos( 24 cartas)
         #Targon (8 cartas) como se fosse o nípe copas na bisca por exemplo, ai no nipe copas tem as cartas de copas
-solvix = Card("Ás Solvix", "Targon", 11, "Algoritmo Instituinte") #como se fosse o ás na bisca
-print(solvix.name)
-print(solvix.value)
-guardiao_da_ordem = Card("Dezguardião da ordem", "Targon", 10, "")    # como se fosse o 7 na bisca
-rei_slugpantheon = Card("Rei Slugpantheon", "Targon", 4, "")        # rei
-cavaleiro_slugleona = Card("Valete Slugleona", "Targon", 3, "")  # valete
-rainha_slugdiana = Card("Dama SlugDiana","Targon", 2, "")         #rainha
-targon_petisco_hexteck = Card("Petisco Hexteck de Targon", "Targon", 0, "")  #as cartas que não vale nada na bisca
-targon_isca_hexteck = Card("Isca Hexteck de Targon", "Targon", 0, "")
-condutor_prismatico_targon = Card("Condutor Prismatico de Targon", "Targon", 0, "")
+solvix = Card("Ás Solvix", "Targon", 11, "Algoritmo Instituinte", "imagens/cartas/solvix.png") #como se fosse o ás na bisca
+guardiao_da_ordem = Card("Dezguardião da ordem", "Targon", 10, "", "imagens/cartas/guardiaoordem.png")    # como se fosse o 7 na bisca
+rei_slugpantheon = Card("Rei Slugpantheon", "Targon", 4, "", "imagens/cartas/reislugpantheon.png")        # rei
+valete_slugleona = Card("Valete Slugleona", "Targon", 3, "", "imagens/cartas/valeteslugleona.png")  # valete
+dama_slugdiana = Card("Dama SlugDiana","Targon", 2, "", "imagens/cartas/damaslugdiana.png")         #rainha
+targon_veiculo_robotico = Card("Veiculo Robotico de Targon", "Targon", 0, "", "imagens/cartas/veiculotargon.png")  #as cartas que não vale nada na bisca
+targon_unidade_hexteck = Card("Unidade Hexteck de Targon", "Targon", 0, "", "imagens/cartas/unidadetargon.png")
+condutor_prismatico_targon = Card("Condutor Prismatico de Targon", "Targon", 0, "", "imagens/cartas/condutortargon.png")
 
         #Piltover(8 cartas) como se fosse outro nipe
-caityslug = Card("Ás Caityslug", "Piltover", 11, "Disparo Calibrado")    #padrão de valores se repete para cada nipe
-guardiao_da_tecnologia = Card("Dezguardião da Tecnologia", "Piltover", 10, "")
-rei_slugheimer = Card("Rei SlugHeimer", "Piltover", 4, "")
-cavaleiro_caveirslug = Card("Valete Caveirslug", "Piltover", 3, "")
-rainha_slugjinx = Card("Dama SlugJinx","Piltover", 2, "")
-piltover_petisco_hexteck = Card("Petisco Hexteck de Piltover", "Piltover", 0, "")
-piltover_isca_hexteck = Card("Isca Hexteck de Piltover", "Piltover", 0, "")
-condutor_prismatico_piltover = Card("Condutor Prismatico de Piltover", "Piltover", 0, "")
+caityslug = Card("Ás Caityslug", "Piltover", 11, "Disparo Calibrado", "imagens/cartas/caityslug.png")    #padrão de valores se repete para cada nipe
+guardiao_da_tecnologia = Card("Dezguardião da Tecnologia", "Piltover", 10, "", "imagens/cartas/guardiaotecnologia.png")
+rei_slugheimer = Card("Rei SlugHeimer", "Piltover", 4, "", "imagens/cartas/reislugheimer.png")
+valete_caveiraslug = Card("Valete Caveiraslug", "Piltover", 3, "", "imagens/cartas/valetecaveiraslug.png" )
+dama_slugjinx = Card("Dama SlugJinx","Piltover", 2, "", "imagens/cartas/damaslugjinx.png")
+piltover_veiculo_robotico = Card("Veiculo Robotico de Piltover", "Piltover", 0, "", "imagens/cartas/veiculopiltover.png")
+piltover_unidade_hexteck = Card("Unidade Hexteck de Piltover", "Piltover", 0, "", "imagens/cartas/unidadepiltover.png")
+condutor_prismatico_piltover = Card("Condutor Prismatico de Piltover", "Piltover", 0, "", "imagens/cartas/condutorpiltover.png")
 
         #Zaun (8 cartas) representa outro nipe
-samira = Card("Ás Samira", "Zaun", 11, "Estilo Desafiador")    #padrão  se repete para cada nipe
-guardiao_da_mutacao = Card("Dezguardião da Mutação", "Zaun", 10, "")
-rei_slugsinged = Card("Rei SlugSinged", "Zaun", 4, "")
-cavaleiro_slugekko = Card("Valete SlugEkko", "Zaun", 3, "")
-rainha_slugcamille = Card("Dama SlugCamille","Zaun", 2, "")
-zaun_petisco_hexteck = Card("Petisco Hexteck de Zaun", "Zaun", 0, "")
-zaun_isca_hexteck = Card("Isca Hexteck de Zaun", "Zaun", 0, "")
-condutor_prismatico_zaun = Card("Condutor prismatico de Zaun", "Zaun", 0, "")
+samira = Card("Ás Samira", "Zaun", 11, "Estilo Desafiador", "imagens/cartas/samira.png")    #padrão  se repete para cada nipe
+guardiao_da_mutacao = Card("Dezguardião da Mutação", "Zaun", 10, "", "imagens/cartas/guardiaomutacao.png")
+rei_slugsinged = Card("Rei SlugSinged", "Zaun", 4, "", "imagens/cartas/reislugsinged.png")
+valete_slugekko = Card("Valete SlugEkko", "Zaun", 3, "", "imagens/cartas/valeteslugekko.png")
+dama_slugcamille = Card("Dama SlugCamille","Zaun", 2, "", "imagens/cartas/damaslugcamille.png")
+zaun_veiculo_robotico = Card("Veiculo Robotico de Zaun", "Zaun", 0, "", "imagens/cartas/veiculozaun.png")
+zaun_unidade_hexteck = Card("Unidade Hexteck de Zaun", "Zaun", 0, "", "imagens/cartas/unidadezaun.png")
+condutor_prismatico_zaun = Card("Condutor prismatico de Zaun", "Zaun", 0, "", "imagens/cartas/condutorzaun.png")
  
 # Ultilizando lista para orgazinar todas as cartas em um unico local, uma lista é como uma gaveta que guarda varios itens,
 #facilita manipulação
 baralho = [
-    solvix, guardiao_da_ordem, rei_slugpantheon, rainha_slugdiana, cavaleiro_slugleona,
-    targon_petisco_hexteck, targon_isca_hexteck, condutor_prismatico_targon,
+    solvix, guardiao_da_ordem, rei_slugpantheon, valete_slugleona, dama_slugdiana,
+    targon_veiculo_robotico, targon_unidade_hexteck, condutor_prismatico_targon,
 
-    caityslug, guardiao_da_tecnologia, rei_slugheimer, rainha_slugjinx, cavaleiro_caveirslug,
-    piltover_petisco_hexteck, piltover_isca_hexteck, condutor_prismatico_piltover,
+    caityslug, guardiao_da_tecnologia, rei_slugheimer, valete_caveiraslug, dama_slugjinx,
+    piltover_veiculo_robotico, piltover_unidade_hexteck, condutor_prismatico_piltover,
 
-    samira, guardiao_da_mutacao, rei_slugsinged, rainha_slugcamille, cavaleiro_slugekko,
-    zaun_petisco_hexteck, zaun_isca_hexteck, condutor_prismatico_zaun
+    samira, guardiao_da_mutacao, rei_slugsinged, valete_slugekko ,dama_slugcamille,
+    zaun_veiculo_robotico, zaun_unidade_hexteck, condutor_prismatico_zaun
 ]
+
+#--- NOVO copia do baralho, que nunca será alterada:
+baralho_completo = baralho[:]
+
+print("Carregando imagens das cartas...")
+for carta in baralho_completo:
+    try:
+        # Carrega a imagem e a guarda dentro do próprio objeto da carta
+        carta.image = pygame.image.load(carta.image_file).convert_alpha()
+    except pygame.error as e:
+        print(f"ERRO: Não foi possível carregar a imagem '{carta.image_file}' - {e}")
+        # Se der erro, cria uma superfície para o jogo não quebrar e você ver qual imagem faltou
+        carta.image = pygame.Surface((100, 150)) 
+        carta.image.fill((32, 178, 170))
+print("Imagens carregadas.")
+
 
 # função que mistura coisas dentro de uma lista
 random.shuffle(baralho)
@@ -196,7 +212,7 @@ score_jogador = 0
 score_computador = 0
 
 #criando o fundo
-FUNDO_VIXTERRA = "vixterra_iniciar.png"
+FUNDO_VIXTERRA = "imagens/background/vixterra_iniciar.png"
 
 try:
     fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
@@ -210,7 +226,7 @@ except pygame.error:
 
 # --- CONFIGURAÇÃO DA TELA INICIAL COM FUNDO ANIMADO E LOGO ---
 
-LOGO_PNG = "nome_vixterra.png"  # nome do arquivo da logo
+LOGO_PNG = "imagens/words/nome_vixterra.png"  # nome do arquivo da logo
 
 # Carrega fundo 
 try:
@@ -261,7 +277,7 @@ splash_start = pygame.time.get_ticks()  # marca início da splash
 
 # Ao sair da splash, segue normalmente para o loop principal do jogo...
 # --- TELA DE MENU PRINCIPAL ---
-MENU_PRINCIPAL_IMG = "menu_vixterra.png"
+MENU_PRINCIPAL_IMG = "imagens/background/menu_vixterra.png"
 try:
     menu_principal = pygame.image.load(MENU_PRINCIPAL_IMG).convert()
     menu_principal = pygame.transform.scale(menu_principal, (LARGURA, ALTURA))
@@ -271,7 +287,7 @@ except pygame.error:
     menu_principal.fill((50, 50, 50))  # fundo cinza se der erro
 
 ### CARREGANDO FUNDO DA TELA DE CARTAS ###
-TELA_CARTAS_FUNDO_IMG = "fundo_cartas_vixterra.png"
+TELA_CARTAS_FUNDO_IMG = "imagens/background/fundo_cartas_vixterra.png"
 try:
     fundo_tela_cartas = pygame.image.load(TELA_CARTAS_FUNDO_IMG).convert()
     fundo_tela_cartas = pygame.transform.scale(fundo_tela_cartas, (LARGURA,ALTURA))
@@ -284,12 +300,24 @@ except pygame.error:
 menu_ativo = True  # variável de controle para manter o menu ativo
 
 # Criar retângulos para botões interativos
-botao_voltar_rect = pygame.Rect(20, ALTURA - 40 - 20, 120, 40)
+botao_voltar_rect = pygame.Rect(15, ALTURA - 35 - 15, 100, 35)
   # botão "Voltar" (x, y, largura, altura)
 aba_cartas_rect = pygame.Rect(400, 600, 200, 50)  # botão "Cartas" (x, y, largura, altura)
 
 #botao jogar
 botao_jogar_rect = pygame.Rect(400, 500, 200, 50)  # x, y, largura, altura
+
+#Botões de Categoria ###
+largura_botao_cat = 150
+altura_botao_cat = 40
+espaco_botoes_cat = 20
+y_botoes_cat = 20 # Altura dos botões na tela
+largura_total_botoes = (3 * largura_botao_cat) + (2 * espaco_botoes_cat)
+x_inicial_botoes = (LARGURA - largura_total_botoes) / 2
+
+botao_targon_rect = pygame.Rect(x_inicial_botoes, y_botoes_cat, largura_botao_cat, altura_botao_cat)
+botao_zaun_rect = pygame.Rect(x_inicial_botoes + largura_botao_cat + espaco_botoes_cat, y_botoes_cat, largura_botao_cat, altura_botao_cat)
+botao_piltover_rect = pygame.Rect(x_inicial_botoes + 2 * (largura_botao_cat + espaco_botoes_cat), y_botoes_cat, largura_botao_cat, altura_botao_cat)
 
 # fonte para os textos dos botões
 fonte = pygame.font.SysFont(None, 28)
@@ -310,6 +338,7 @@ numero_da_rodada = 1
 jogo_ativo = False
 rodando = True
 tela_cartas_ativa = False
+categoria_visivel = "Targon" #começar mostrando targon
 
 while rodando: 
     dt = clock.tick(60)
@@ -356,6 +385,14 @@ while rodando:
                 if botao_voltar_rect.collidepoint(evento.pos):
                     tela_cartas_ativa = False # Desliga a tela de cartas
                     menu_ativo = True         # Liga o menu novamente
+                    
+                ##Lógica de clique para os botões de categoria ###
+                elif botao_targon_rect.collidepoint(evento.pos):
+                    categoria_visivel = "Targon"
+                elif botao_zaun_rect.collidepoint(evento.pos):
+                    categoria_visivel = "Zaun"
+                elif botao_piltover_rect.collidepoint(evento.pos):
+                    categoria_visivel = "Piltover"
 
     # 2. LÓGICA DE ATUALIZAÇÃO E DESENHO
     
@@ -434,19 +471,82 @@ while rodando:
         pygame.display.flip()
 
 
-    # --- NOVO ESTADO: TELA DE CARTAS ---
+        # --- NOVO ESTADO: TELA DE CARTAS (VERSÃO COM BOTÕES E CORREÇÃO) ---
     elif tela_cartas_ativa:
-        tela.blit(fundo_tela_cartas, (0, 0)) # Desenha o fundo
-            
-            ### NOVO: Desenha o botão Voltar ###
+        # 1. Desenha o fundo e o botão Voltar
+        tela.blit(fundo_tela_cartas, (0, 0))
         pygame.draw.rect(tela, (0, 255, 255), botao_voltar_rect)
-        texto_voltar = fonte.render("Voltar", True, (0, 0, 0)) # Texto em preto
+        texto_voltar = fonte.render("Voltar", True, (0, 0, 0))
         tx = botao_voltar_rect.x + (botao_voltar_rect.width - texto_voltar.get_width()) // 2
         ty = botao_voltar_rect.y + (botao_voltar_rect.height - texto_voltar.get_height()) // 2
         tela.blit(texto_voltar, (tx, ty))
 
-        pygame.display.flip() # Atualiza a tela
-    
+        # 2. Desenha os botões de categoria (Targon, Zaun, Piltover)
+        cor_ativa = (255, 215, 0) # Dourado
+        cor_inativa = (0, 100, 200) # Azul escuro
+
+        cor_targon = cor_ativa if categoria_visivel == "Targon" else cor_inativa
+        pygame.draw.rect(tela, cor_targon, botao_targon_rect, border_radius=8)
+        texto_targon = fonte.render("Targon", True, (255, 255, 255))
+        tela.blit(texto_targon, texto_targon.get_rect(center=botao_targon_rect.center))
+
+        cor_zaun = cor_ativa if categoria_visivel == "Zaun" else cor_inativa
+        pygame.draw.rect(tela, cor_zaun, botao_zaun_rect, border_radius=8)
+        texto_zaun = fonte.render("Zaun", True, (255, 255, 255))
+        tela.blit(texto_zaun, texto_zaun.get_rect(center=botao_zaun_rect.center))
+        
+        cor_piltover = cor_ativa if categoria_visivel == "Piltover" else cor_inativa
+        pygame.draw.rect(tela, cor_piltover, botao_piltover_rect, border_radius=8)
+        texto_piltover = fonte.render("Piltover", True, (255, 255, 255))
+        tela.blit(texto_piltover, texto_piltover.get_rect(center=botao_piltover_rect.center))
+
+        # 3. Filtra as cartas e seleciona qual lista desenhar
+        cartas_targon = [c for c in baralho_completo if c.category == "Targon"]
+        cartas_zaun = [c for c in baralho_completo if c.category == "Zaun"]
+        cartas_piltover = [c for c in baralho_completo if c.category == "Piltover"]
+        
+        cartas_para_desenhar = []
+        if categoria_visivel == "Targon":
+            cartas_para_desenhar = cartas_targon
+        elif categoria_visivel == "Zaun":
+            cartas_para_desenhar = cartas_zaun
+        elif categoria_visivel == "Piltover":
+            cartas_para_desenhar = cartas_piltover
+        
+        # 4. Nova configuração da grade (2x4, para cartas bem maiores)
+        margem_x = 40
+        margem_y_inicial = 90
+        espacamento_h = 30
+        espaco_entre_linhas = 30
+        num_cartas_por_linha = 4
+        
+        # Cálculo de tamanho baseado na LARGURA
+        card_larg = int((LARGURA - 2 * margem_x - (num_cartas_por_linha - 1) * espacamento_h) / num_cartas_por_linha)
+        
+        # 5. Desenha as 8 cartas da categoria selecionada
+        # Verifica se a lista não está vazia para evitar erros
+        if cartas_para_desenhar:
+            for i, carta in enumerate(cartas_para_desenhar):
+                # Calcula a coluna (0 a 3) e a linha (0 ou 1)
+                coluna = i % num_cartas_por_linha
+                linha = i // num_cartas_por_linha
+                
+                ### <<-- A ORDEM FOI CORRIGIDA AQUI -->> ###
+                
+                # PRIMEIRO: Calcula a altura correta mantendo a proporção da arte
+                original_larg, original_alt = carta.image.get_size()
+                card_alt_calculado = int(original_alt * (card_larg / original_larg))
+
+                # SEGUNDO: Usa a altura calculada para definir a posição Y
+                posicao_x = margem_x + coluna * (card_larg + espacamento_h)
+                posicao_y = margem_y_inicial + linha * (card_alt_calculado + espaco_entre_linhas)
+
+                # TERCEIRO: Redimensiona e desenha a imagem
+                imagem_redimensionada = pygame.transform.smoothscale(carta.image, (card_larg, card_alt_calculado))
+                tela.blit(imagem_redimensionada, (posicao_x, posicao_y))
+
+        # Atualiza a tela para mostrar tudo
+        pygame.display.flip()
     # --- ESTADO C: JOGO ATIVO ---
     elif jogo_ativo:
         # A lógica de rodada completa (incluindo jogada_jogador_mouse) deve estar aqui
