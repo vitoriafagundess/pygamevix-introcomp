@@ -40,8 +40,8 @@ O baralho é composto por 24 cartas com valores de ponto fixos, seguindo o padr�
 * **Solvix** (Ás) - Ataque: **Algoritmo Instituinte** - **11 pontos**
 * **Guardião da Ordem** (7) - **10 pontos**
 * **Rei SlugPantheon** (Rei) - **4 pontos**
-* **Cavaleiro SlugLeona** (Valete) - **3 pontos**
-* **Rainha SlugDiana** (Dama) - **2 pontos**
+* **Valete SlugLeona** (Valete) - **3 pontos**
+* **Dama SlugDiana** (Dama) - **2 pontos**
 
 * **Veiculo Robotico de Targon**  - **0 pontos**
 * **Unidade Hexteck de Targon**  - **0 pontos**
@@ -51,8 +51,8 @@ O baralho é composto por 24 cartas com valores de ponto fixos, seguindo o padr�
 * **Caityslug** (Ás) - Ataque: **Disparo Calibrado** - **11 pontos**
 * **Guardião da Tecnologia** (7) - **10 pontos**
 * **Rei SlugHeimer** (Rei) - **4 pontos**
-* **Cavaleiro Caveirslug** (Valete) - **3 pontos**
-* **Rainha SlugJinx** (Dama) - **2 pontos**
+* **Valete Caveiraslug** (Valete) - **3 pontos**
+* **Dama SlugJinx** (Dama) - **2 pontos**
 
 
 * **Veiculo Robotico de Piltover**  - **0 pontos**
@@ -63,8 +63,8 @@ O baralho é composto por 24 cartas com valores de ponto fixos, seguindo o padr�
 * **Samira** (Ás) - Ataque: **Estilo Desafiador** - **11 pontos**
 * **Guardião da Mutação** (7) - **10 pontos**
 * **Rei SlugSinged** (Rei) - **4 pontos**
-* **Cavaleiro SlugEkk** (Valete) - **3 pontos**
-* **Rainha SlugCamille** (Dama) - **2 pontos**
+* **Valete SlugEkko** (Valete) - **3 pontos**
+* **Dama SlugCamille** (Dama) - **2 pontos**
 
   
 * **Veiculo Robotico de Zaun**  - **0 pontos**
