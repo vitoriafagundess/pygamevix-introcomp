@@ -43,8 +43,8 @@ O baralho √© composto por 24 cartas com valores de ponto fixos, seguindo o padr√
 * **Cavaleiro SlugLeona** (Valete) - **3 pontos**
 * **Rainha SlugDiana** (Dama) - **2 pontos**
 
+* **Veiculo Robotico de Targon**  - **0 pontos**
 * **Unidade Hexteck de Targon**  - **0 pontos**
-* **Isca Hexteck de Targon**  - **0 pontos**
 * **Condutor Prismatico de Targon** - **0 pontos**
 
 #### **Piltover**
@@ -55,8 +55,8 @@ O baralho √© composto por 24 cartas com valores de ponto fixos, seguindo o padr√
 * **Rainha SlugJinx** (Dama) - **2 pontos**
 
 
-* **Unidade Hexteck de Piltover**  - **0 pontos**
-* **Isca Hexteck de Piltover** - **0 pontos**
+* **Veiculo Robotico de Piltover**  - **0 pontos**
+* **Unidade Hexteck de Piltover** - **0 pontos**
 * **Condutor Prismatico de Piltover** - **0 pontos**
 
 #### **Zaun**
@@ -67,6 +67,6 @@ O baralho √© composto por 24 cartas com valores de ponto fixos, seguindo o padr√
 * **Rainha SlugCamille** (Dama) - **2 pontos**
 
   
+* **Veiculo Robotico de Zaun**  - **0 pontos**
 * **Unidade Hexteck de Zaun**  - **0 pontos**
-* **Isca Hexteck de Zaun**  - **0 pontos**
 * **Condutor Prismatico de Zaun** - **0 pontos**
