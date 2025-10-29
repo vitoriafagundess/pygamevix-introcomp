@@ -1,6 +1,6 @@
 # Vixterra: Duelo de Prismas
 
-Um MVP de um card game por turnos, construído em Python e Pygame.
+Meu primeiro MVP de um card game por turnos, construído em Python e Pygame.
 
 ### 📜 Resumo do Projeto
 
