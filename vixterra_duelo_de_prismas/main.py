@@ -251,9 +251,9 @@ except pygame.error as e:
 
 ### Carregar fundos da tela de jogo ###
 try:
-    fundo_jogo_targon = pygame.transform.scale(pygame.image.load("imagens/background/campo_zaun.png").convert(), (LARGURA, ALTURA))
+    fundo_jogo_targon = pygame.transform.scale(pygame.image.load("imagens/background/campo_targon.png").convert(), (LARGURA, ALTURA))
     fundo_jogo_zaun = pygame.transform.scale(pygame.image.load("imagens/background/campo_zaun.png").convert(), (LARGURA, ALTURA))
-    fundo_jogo_piltover = pygame.transform.scale(pygame.image.load("imagens/background/campo_zaun.png").convert(), (LARGURA, ALTURA))
+    fundo_jogo_piltover = pygame.transform.scale(pygame.image.load("imagens/background/campo_piltover.png").convert(), (LARGURA, ALTURA))
 except pygame.error as e:
     print(f"Erro ao carregar fundos de jogo: {e}")
     # Se der erro, usa o fundo padrão
