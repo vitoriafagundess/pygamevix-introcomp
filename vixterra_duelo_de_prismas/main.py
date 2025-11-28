@@ -1,5 +1,18 @@
 import pygame #bliblioteca pygame
 import random # chama a bliblioteca que lida com coisas aleatórias
+import sys
+import os  # <--- IMPORTANTE PARA O EXECUTÁVEL
+
+# --- FUNÇÃO  PARA O EXECUTÁVEL FUNCIONAR 
+def resource_path(relative_path):
+    try:
+        # PyInstaller cria uma pasta temporária em _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+# -------------------------------------------------
 
 # Inicializando o pygame
 pygame.init() 
@@ -156,7 +169,7 @@ print("Carregando imagens das cartas...")
 for carta in baralho_completo:
     try:
         # Carrega a imagem e a guarda dentro do próprio objeto da carta
-        carta.image = pygame.image.load(carta.image_file).convert_alpha()
+        carta.image = pygame.image.load(resource_path(carta.image_file)).convert_alpha()
     except pygame.error as e:
         print(f"ERRO: Não foi possível carregar a imagem '{carta.image_file}' - {e}")
         # Se der erro, cria uma superfície para o jogo não quebrar e você ver qual imagem faltou
@@ -217,7 +230,7 @@ score_computador = 0
 FUNDO_VIXTERRA = "imagens/background/vixterra_iniciar.png"
 
 try:
-    fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
+    fundo_img = pygame.image.load(resource_path(FUNDO_VIXTERRA)).convert()
     #garante que a imagem tenho o mesmo tamanho da tela
     fundo_img = pygame.transform.scale(fundo_img,(LARGURA, ALTURA))
 except pygame.error:
@@ -232,7 +245,7 @@ LOGO_PNG = "imagens/words/nome_vixterra.png"  # nome do arquivo da logo
 
 # Carrega fundo 
 try:
-    fundo_img = pygame.image.load(FUNDO_VIXTERRA).convert()
+    fundo_img = pygame.image.load(resource_path(FUNDO_VIXTERRA)).convert()
     fundo_img = pygame.transform.scale(fundo_img, (1400, ALTURA))
 except pygame.error:
     print(f"Não foi possivel carregar a imagem de fundo: {FUNDO_VIXTERRA}")
@@ -242,7 +255,7 @@ except pygame.error:
 
 #Carregar a imagem do verso da carta ###
 try:
-    verso_carta_img = pygame.image.load("imagens/cartas/verso_carta.png").convert_alpha()
+    verso_carta_img = pygame.image.load(resource_path("imagens/cartas/verso_carta.png")).convert_alpha()
 except pygame.error as e:
     print(f"Erro ao carregar o verso da carta: {e}")
     # Cria uma superfície preta se a imagem não for encontrada
@@ -251,9 +264,9 @@ except pygame.error as e:
 
 ### Carregar fundos da tela de jogo ###
 try:
-    fundo_jogo_targon = pygame.transform.scale(pygame.image.load("imagens/background/campo_targon.png").convert(), (LARGURA, ALTURA))
-    fundo_jogo_zaun = pygame.transform.scale(pygame.image.load("imagens/background/campo_zaun.png").convert(), (LARGURA, ALTURA))
-    fundo_jogo_piltover = pygame.transform.scale(pygame.image.load("imagens/background/campo_piltover.png").convert(), (LARGURA, ALTURA))
+    fundo_jogo_targon = pygame.transform.scale(pygame.image.load(resource_path("imagens/background/campo_targon.png")).convert(), (LARGURA, ALTURA))
+    fundo_jogo_zaun = pygame.transform.scale(pygame.image.load(resource_path("imagens/background/campo_zaun.png")).convert(), (LARGURA, ALTURA))
+    fundo_jogo_piltover = pygame.transform.scale(pygame.image.load(resource_path("imagens/background/campo_piltover.png")).convert(), (LARGURA, ALTURA))
 except pygame.error as e:
     print(f"Erro ao carregar fundos de jogo: {e}")
     # Se der erro, usa o fundo padrão
@@ -263,7 +276,7 @@ except pygame.error as e:
 
 # Carrega logo com canal alpha (transparência)
 try:
-    logo = pygame.image.load(LOGO_PNG).convert_alpha()
+    logo = pygame.image.load(resource_path(LOGO_PNG)).convert_alpha()
     # opções de escala: deixa a logo proporcional ao tamanho da tela (ex: 30% da largura)
     logo_largura = int(LARGURA * 0.40)
     logo_altura = int(logo.get_height() * (logo_largura / logo.get_width())) #calcula a altura proporcional para não deformar a imagem
@@ -303,7 +316,7 @@ splash_start = pygame.time.get_ticks()  # marca início da splash
 # --- TELA DE MENU PRINCIPAL ---
 MENU_PRINCIPAL_IMG = "imagens/background/menu_vixterra.png"
 try:
-    menu_principal = pygame.image.load(MENU_PRINCIPAL_IMG).convert()
+    menu_principal = pygame.image.load(resource_path(MENU_PRINCIPAL_IMG)).convert()
     menu_principal = pygame.transform.scale(menu_principal, (LARGURA, ALTURA))
 except pygame.error:
     print(f"Não foi possível carregar a imagem: {MENU_PRINCIPAL_IMG}")
@@ -313,7 +326,7 @@ except pygame.error:
 ### CARREGANDO FUNDO DA TELA DE CARTAS ###
 TELA_CARTAS_FUNDO_IMG = "imagens/background/fundo_cartas_vixterra.png"
 try:
-    fundo_tela_cartas = pygame.image.load(TELA_CARTAS_FUNDO_IMG).convert()
+    fundo_tela_cartas = pygame.image.load(resource_path(TELA_CARTAS_FUNDO_IMG)).convert()
     fundo_tela_cartas = pygame.transform.scale(fundo_tela_cartas, (LARGURA,ALTURA))
 except pygame.error:
     print(f"Não foi possivel carregar a imagem: {TELA_CARTAS_FUNDO_IMG}")
