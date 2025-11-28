@@ -5,7 +5,8 @@ Meu primeiro MVP de um card game por turnos, construído em Python e Pygame.
 ## 🎮 Como Jogar (Download)
 
 Você não precisa instalar Python para jogar!
-clique aqui para baixar:
+
+- Clique aqui para baixar:
 1. **[https://github.com/vitoriafagundess/pygamevix-introcomp/releases/download/v1.0/main.exe]**
 2. Baixe o arquivo `.exe`.
 3. Se o Windows avisar sobre segurança, clique em "Mais informações" -> "Executar mesmo assim".
@@ -15,7 +16,8 @@ clique aqui para baixar:
 - Python 3
 - Pygame
 - Auto-Py-To-Exe (para compilação)
-Minha release: https://github.com/vitoriafagundess/pygamevix-introcomp/releases/tag/v1.0
+
+- Minha release: https://github.com/vitoriafagundess/pygamevix-introcomp/releases/tag/v1.0
 
 
 ### 📜 Resumo do Projeto
